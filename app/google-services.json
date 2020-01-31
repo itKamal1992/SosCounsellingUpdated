@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "385837663944",
+    "firebase_url": "https://soscounsellingapp.firebaseio.com",
+    "project_id": "soscounsellingapp",
+    "storage_bucket": "soscounsellingapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385837663944:android:c1c44d789d58d74f4b07fd",
+        "android_client_info": {
+          "package_name": "com.example.soscounsellingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385837663944-kj4kkldmvk50tsvh5s4ldel6u4pc1gpd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.soscounsellingapp",
+            "certificate_hash": "b70cfe427b4cd0ed56f0e49733e35be6f7cb505e"
+          }
+        },
+        {
+          "client_id": "385837663944-g0qe5e4rp9so529gkt910gtamasitskr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD-J6H7B0RIB-qwN9CMaiP0JERwrOMQCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385837663944-g0qe5e4rp9so529gkt910gtamasitskr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

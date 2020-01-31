@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <string-array name="school">
+        <item>Select School </item>
+        <item>SOS 1</item>
+        <item>SOS 1</item>
+        <item>SOS 1</item>
+    </string-array>
+
+
+
+    <string-array name="class_school">
+        <item>Select class </item>
+        <item>1st </item>
+        <item>2nd</item>
+        <item>3rd</item>
+    </string-array>
+</resources>
