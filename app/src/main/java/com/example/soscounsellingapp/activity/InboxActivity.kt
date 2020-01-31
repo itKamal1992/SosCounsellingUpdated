@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 //${comments[i].SENDER_NAME}
-//Sender Name///////
+//Sender Name/////
 class InboxActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView?=null
     var Pid: String=""
