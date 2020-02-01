@@ -43,6 +43,7 @@ interface IMyAPI {
         @Field("Password")  ADDRESS:String
     ):Call<GetLoginData>
 
+
 //    @FormUrlEncoded
 //    @GET("Post/GetMessage")
 //    fun getPostsData(
@@ -59,4 +60,20 @@ interface IMyAPI {
     fun getLikePosts(
         @QueryMap  options:Map<String, String>)
             :Call<APIResponse>
+
+
+    @FormUrlEncoded
+    @POST("Comment/PostComment")
+    fun giveComments(
+        @Field("PAR_UID") PAR_UID:String ,
+        @Field("SCH_UID")  SCH_UID:String,
+        @Field("ID")  ID:String,
+        @Field("COMMENT_DESC")  COMMENT_DESC:String,
+        @Field("CDATE")  CDATE:String,
+        @Field("SENDER_NAME")  SENDER_NAME:String,
+        @Field("CAGN")  CAGN:String
+    ):Call<APIResponse>
 }
+/*
+PAR_UID:String ,SCH_UID:String, ID:String,COMMENT_DESC:String,CDATE:String,SENDER_NAME:String,CAGN:String
+*/

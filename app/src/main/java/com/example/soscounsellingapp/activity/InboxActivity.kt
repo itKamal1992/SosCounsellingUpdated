@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soscounsellingapp.Adapter.PostAdapter
@@ -34,7 +35,7 @@ import kotlin.collections.ArrayList
 //Sender Name/////
 class InboxActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView?=null
-    var Pid: String=""
+    var PID: String=""
     var S_ID: String=""
 
     var parentName: String=""
@@ -48,7 +49,7 @@ class InboxActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inbox)
 
-        Pid = intent.getStringExtra("PID")
+        PID = intent.getStringExtra("PID")
         S_ID = intent.getStringExtra("S_ID")
         parentName= intent.getStringExtra("parentName")
         val myFormat = "dd-MM-yyyy" // mention the format you need
@@ -63,6 +64,8 @@ class InboxActivity : AppCompatActivity() {
 
         select_from_date!!.text = sdf.format(oldDate)
         select_to_date!!.text   = sdf.format(cal.time).toString()
+
+        getApiResult("Common")
 
         select_from_date.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
@@ -267,7 +270,7 @@ class InboxActivity : AppCompatActivity() {
 
             try {
                 var sosPostsRequest=SosPostsRequest(
-                    "" + Pid,
+                    "" + PID,
                     ""+ select_to_date!!.text,
                     ""+ select_from_date!!.text
 
@@ -276,7 +279,7 @@ class InboxActivity : AppCompatActivity() {
                 mServices = Common.getAPI()
 
                 val data: MutableMap<String, String> = HashMap()
-                data["PID"] = Pid
+                data["PID"] = PID
                 data["FROM_DATE"] = select_from_date!!.text.toString()
                 data["TO_DATE"] = select_to_date!!.text.toString()
                 data["S_ID"] = S_ID
@@ -307,16 +310,34 @@ class InboxActivity : AppCompatActivity() {
                                     {
                                         val commentArray = ArrayList<CommentParameter>()
 
+                                        var parentsNam=mutableSetOf<String>()
+                                        parentsNam.add("Reply to post")
+                                        var commentAgainst=ArrayList<String>()
+
                                         var comments=result[i].COMMENTS
                                         val com = StringBuilder()
                                         if (comments.size>0){
                                             for (j in 0..comments.size - 1 ){
 //                                                comments[i].SENDER_NAME + comments[i].COMMENT_DESC
                                                 if (j==0) {
-                                                    com!!.append("<html><h4>${comments[i].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    if (comments[j].CAGN!="Reply to post"){
+                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }else {
+                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }
                                                 }else
                                                 {
-                                                    com!!.append("<html><br><hr><h4>${comments[i].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    if (comments[j].CAGN!="Reply to post"){
+                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }
+                                                    else {
+                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }
+                                                }
+                                                if(comments[i].SENDER_NAME==parentName){
+
+                                                }  else {
+                                                    parentsNam.add(comments[i].SENDER_NAME)
                                                 }
                                             }
                                         }else
@@ -331,14 +352,19 @@ class InboxActivity : AppCompatActivity() {
                                             "",
                                             com.toString(),
                                             "",
+                                            "",
                                             ""
                                         ))
+                                        for(element in parentsNam){
+                                            println(element)
+                                            commentAgainst.add(element)
+                                        }
                                         if (result[i].PID=="SPE"){
                                         postParameterArray.add(
                                             PostParameter(
                                                 ""+result[i].ID,
 
-                                                ""+Pid,// getting user PID not from Response
+                                                ""+PID,// getting user PID not from Response
                                                 ""+result[i].COUNS_ID,
                                                 ""+result[i].S_ID,
                                                 ""+result[i].POST_TITLE,
@@ -354,8 +380,9 @@ class InboxActivity : AppCompatActivity() {
                                                 parentName,
                                                 commentArray,
                                                 ""+result[i].LIKES_STATUS_PAR,
-                                                ""+result[i].LIKES_STATUS_COUS
-
+                                                ""+result[i].LIKES_STATUS_COUS,
+                                                ""+comments.size,
+                                                commentAgainst
                                             )
                                         )
                                         }
@@ -364,17 +391,35 @@ class InboxActivity : AppCompatActivity() {
                                     if (postfor=="Common"){
                                         val commentArray = ArrayList<CommentParameter>()
 
+                                        var parentsNam=mutableSetOf<String>()
+                                        parentsNam.add("Reply to post")
+                                        var commentAgainst=ArrayList<String>()
+
                                         var comments=result[i].COMMENTS
                                         val com = StringBuilder()
                                         if (comments.size>0){
                                             for (j in 0..comments.size - 1 ){
 //                                                comments[i].SENDER_NAME + comments[i].COMMENT_DESC
                                                 if (j==0) {
-                                                    com!!.append("<html><h4>${comments[i].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    if (comments[j].CAGN!="Reply to post"){
+                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }else {
+                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }
                                                 }else
                                                 {
-                                                    com!!.append("<html><br><hr><h4>${comments[i].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    if (comments[j].CAGN!="Reply to post"){
+                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }
+                                                    else {
+                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                    }
                                                 }
+                                              if(comments[i].SENDER_NAME==parentName){
+
+                                              }  else {
+                                                  parentsNam.add(comments[i].SENDER_NAME)
+                                              }
                                             }
                                         }else
                                         {
@@ -388,13 +433,18 @@ class InboxActivity : AppCompatActivity() {
                                             "",
                                             com.toString(),
                                             "",
+                                            "",
                                             ""
                                         ))
+                                        for(element in parentsNam){
+                                            println(element)
+                                            commentAgainst.add(element)
+                                        }
                                         if (result[i].PID!="SPE"){
                                             postParameterArray.add(
                                                 PostParameter(
                                                     ""+result[i].ID,
-                                                    ""+Pid,// getting user PID not from Response
+                                                    ""+PID,// getting user PID not from Response
                                                     ""+result[i].COUNS_ID,
                                                     ""+result[i].S_ID,
                                                     ""+result[i].POST_TITLE,
@@ -410,8 +460,9 @@ class InboxActivity : AppCompatActivity() {
                                                     parentName,
                                                     commentArray,
                                                     ""+result[i].LIKES_STATUS_PAR,
-                                                    ""+result[i].LIKES_STATUS_COUS
-
+                                                    ""+result[i].LIKES_STATUS_COUS,
+                                                    ""+comments.size,
+                                                    commentAgainst
                                                 )
                                             )
                                         }
@@ -420,21 +471,30 @@ class InboxActivity : AppCompatActivity() {
 
 
                                 }
+
                                 val adapter =
-                                    PostAdapter(postParameterArray, this@InboxActivity)
+                                    PostAdapter(postParameterArray, this@InboxActivity,PID,select_from_date!!.text.toString(),
+                                        select_to_date!!.text.toString(),S_ID,postfor)
                                 if (postParameterArray.isEmpty()) {
 //                                    if (!isFinishing){ postParameterArray.clear()
-
+                                    postParameterArray.clear()
+                                    adapter.notifyDataSetChanged()
+                                    recyclerView!!.adapter = adapter
                                     GenericUserFunction.showOopsError(
                                         this@InboxActivity,
-                                        "Not a single Posts delivered for you"
+                                        "Posts not delivered for you"
                                     )
 //                                    adapter.notifyDataSetChanged()
 //                                    }
                                 } else {
-
+//                                    var mDividerItemDecoration = DividerItemDecoration(
+//                                        recyclerView!!.context,
+//                                    RecyclerView.LayoutManager.get
+//                                    )
+//                                    recyclerView!!.addItemDecoration(mDividerItemDecoration)
 
                                     recyclerView!!.adapter = adapter
+
                                 }
 
                             }

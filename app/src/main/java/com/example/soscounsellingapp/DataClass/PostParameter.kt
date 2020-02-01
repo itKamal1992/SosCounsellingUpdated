@@ -21,7 +21,9 @@ data class PostParameter(
     val ParentName : String,
     val COMMENTS:ArrayList<CommentParameter>,
     val LIKES_STATUS_PAR: String,
-    val LIKES_STATUS_COUS: String
+    val LIKES_STATUS_COUS: String,
+    val comment_count: String,
+    val commentAgainst:ArrayList<String>
 
 
 )

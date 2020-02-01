@@ -28,4 +28,5 @@
     <string name="failureStorageErr">Please give storage permission. To Enjoy uninterrupted App Functionality.</string>
     <string name="failureSSApiVerErr">Please Try again, Failed to connect to the Server.</string>
     <string name="failureNoInternetErr">No Internet Connection. Please connect to active internet connection.</string>
+
 </resources>

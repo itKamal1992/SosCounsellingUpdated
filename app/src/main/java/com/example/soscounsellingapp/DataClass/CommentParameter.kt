@@ -10,6 +10,7 @@ val SCH_UID: String,
 val ID: String,
 val COMMENT_DESC:String,
 val CDATE:String,
-val SENDER_NAME:String
+val SENDER_NAME:String,
+val CAGN:String
 
 )
