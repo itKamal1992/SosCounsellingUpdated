@@ -35,4 +35,10 @@ interface PhpApiInterface {
         @Field("Doe") Doe: String, @Field("STATUS") STATUS: String, @Field("REMARK") REMARK: String): Call<APIResponse>
 
 
+
+
+    @FormUrlEncoded
+    @POST("api_cubs/viewpager_img.php")
+    fun GetSliderImage(@Field("Sid") Sid : Int): Call<APIResponse>
+
 }

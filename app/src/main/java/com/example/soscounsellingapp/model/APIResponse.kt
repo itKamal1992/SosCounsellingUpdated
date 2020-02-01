@@ -18,5 +18,5 @@ class APIResponse {
     var Data18: List<GrievanceDataField>? = null
     var data: List<GetLoginData>? = null
 
-
+    var data1: List<GetLoginData>? = null
 }

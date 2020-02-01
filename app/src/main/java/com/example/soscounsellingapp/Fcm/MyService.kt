@@ -43,9 +43,9 @@ class MyService : FirebaseMessagingService() {
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 val id = "id_product"
                 // The user-visible name of the channel.
-                val name = "DMIMS DU"
+                val name = "Sos Counselling"
                 // The user-visible description of the channel.
-                val description = "Notifications regarding our products"
+                val description = "Notifications regarding Sos"
                 val importance = NotificationManager.IMPORTANCE_MAX
                 val mChannel = NotificationChannel(id, name, importance)
                 // Configure the notification channel.

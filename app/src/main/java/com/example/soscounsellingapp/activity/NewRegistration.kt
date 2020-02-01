@@ -299,7 +299,7 @@ class NewRegistration : AppCompatActivity() {
                     parentWhatsAppMobile,
                     childName,
                     current_date,
-                    parentEmail,
+                    parentEmail.toLowerCase().replace(" ",""),
                     class_name,
                     password
                 )
@@ -393,7 +393,7 @@ class NewRegistration : AppCompatActivity() {
             dialog.setCancelable(false)
             dialog.show()
 
-            mServices.UserLogin(usernameLogin, password)
+            mServices.UserLogin(usernameLogin,password)
                 .enqueue(object : Callback<GetLoginData> {
                     override fun onFailure(call: Call<GetLoginData>, t: Throwable) {
                         if (!isFinishing){

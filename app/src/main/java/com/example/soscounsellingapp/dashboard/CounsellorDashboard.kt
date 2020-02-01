@@ -36,6 +36,16 @@ class CounsellorDashboard : AppCompatActivity(), NavigationView.OnNavigationItem
     var schoolClass:String=""
     var Uid:String=""
 
+
+    private val urls = arrayOf(
+        "https://www.dmimsdu.in/web/api_cubs/viewpager_image/common_img.jpg",
+        "https://demonuts.com/Demonuts/SampleImages/W-08.JPG",
+        "https://demonuts.com/Demonuts/SampleImages/W-10.JPG",
+        "https://demonuts.com/Demonuts/SampleImages/W-13.JPG",
+        "https://demonuts.com/Demonuts/SampleImages/W-17.JPG",
+        "https://demonuts.com/Demonuts/SampleImages/W-21.JPG"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_counsellor_dashboard)
@@ -58,7 +68,7 @@ class CounsellorDashboard : AppCompatActivity(), NavigationView.OnNavigationItem
 
         nav_view.setNavigationItemSelectedListener(this)
         //ViewPager
-        val viewPagerAdapter = ViewPagerAdapter(this)
+        val viewPagerAdapter = ViewPagerAdapter(this,urls)
         viewPager.adapter = viewPagerAdapter
         dotsCount = viewPagerAdapter.count
         dots = arrayOfNulls<ImageView>(dotsCount)

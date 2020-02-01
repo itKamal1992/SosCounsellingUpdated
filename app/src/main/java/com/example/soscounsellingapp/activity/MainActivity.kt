@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
         btn_Login.setOnClickListener {
 
-            userName = et_username.text.toString()
+            userName = et_username.text.toString().toLowerCase()
             password = et_password.text.toString()
 
             if (userName.equals(""))

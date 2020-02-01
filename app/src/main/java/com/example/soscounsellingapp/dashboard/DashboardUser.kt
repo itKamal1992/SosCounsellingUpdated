@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.soscounsellingapp.Adapter.ViewPagerAdapter
+import com.example.soscounsellingapp.Fcm.NotificationForground
 import com.example.soscounsellingapp.R
 import com.example.soscounsellingapp.activity.InboxActivity
 import com.example.soscounsellingapp.activity.MainActivity
@@ -57,6 +58,16 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private var TOKEN_ID1: String = ""
     private var TOKEN_ID: String = ""
 
+
+    var img1: String = ""
+    var img2: String = ""
+    var img3: String = ""
+    var img4: String = ""
+    var img5: String = ""
+
+    var sidurl: Int = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard_user)
@@ -74,6 +85,7 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
             }
         }
+var notificationForground:NotificationForground
 
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -94,9 +106,201 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
 
+
+
         nav_view.setNavigationItemSelectedListener(this)
+
+
+        val navigationView = findViewById(R.id.nav_view) as NavigationView
+        val headerView: View = navigationView.getHeaderView(0)
+        val tv_parentName = headerView.findViewById(R.id.tv_parentName) as TextView
+        val tv_Email = headerView.findViewById(R.id.tv_Email) as TextView
+
+        val tv_Mobile = headerView.findViewById(R.id.tv_Mobile) as TextView
+        val tv_WhatsApp = headerView.findViewById(R.id.tv_WhatsApp) as TextView
+        val header_linearlayout_line =
+            headerView.findViewById(R.id.header_linearlayout_line) as LinearLayout
+
+        val tv_ChildName = headerView.findViewById(R.id.tv_ChildName) as TextView
+        val tv_School = headerView.findViewById(R.id.tv_School) as TextView
+        val tv_Class = headerView.findViewById(R.id.tv_Class) as TextView
+
+
+        ////Code for Setting Details
+
+//        val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
+//        Uid          = mypref.getString("ID", null)
+//        parentName   = mypref.getString("Parent_NAME", null)
+//        parentMobile = mypref.getString("Parent_Mobile", null)
+//        parentEmail  = mypref.getString("Parent_EMAIL", null)
+//        childName    = mypref.getString("Child_NAME", null)
+//        schoolClass  = mypref.getString("School_CLASS", null)
+//        schoolName   = mypref.getString("School_NAME", null)
+//
+//
+//
+
+
+        ////Code for Setting Details
+
+        val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
+        PID = mypref.getString("PID", null)
+        parentName = mypref.getString("Parent_NAME", null)
+        parentMobile = mypref.getString("Parent_Mobile", null)
+        parentEmail = mypref.getString("Parent_EMAIL", null)
+        childName = mypref.getString("Child_NAME", null)
+        Address = mypref.getString("Address", null)
+        schoolClass = mypref.getString("School_CLASS", null)
+        schoolName = mypref.getString("School_NAME", null)
+        enquiryDate = mypref.getString("RegistrationDate", null)
+
+        UserRole = mypref.getString("UserRole", null)
+        SID = mypref.getString("SID", null)
+        whatsApptMobile = mypref.getString("Whatsapp_mno", null)
+        coMobile = mypref.getString("Co_mobile", null)
+        couns_id = mypref.getString("couns_id", null)
+        TOKEN_ID = mypref.getString("TOKEN_ID", null)
+
+        sidurl = mypref.getString("SID", null).toInt()
+        println("sidurl   " + sidurl)
+
+        GetSliderImage()
+
+        InsertToken(
+            PID,
+            TOKEN_ID,
+            parentName,
+            schoolName,
+            SID,
+            couns_id,
+            schoolClass,
+            parentMobile,
+            parentEmail,
+            whatsApptMobile,
+            UserRole,
+            enquiryDate,
+            "",
+            ""
+        )
+
+        tv_parentName.text = "Parent Name : $parentName"
+        tv_Email.setText("Email : $parentEmail")
+
+        tv_ChildName.setText("Child Name : $childName")
+        tv_School.setText("School : $schoolName")
+        tv_Class.setText("Class : $schoolClass")
+
+        if (parentMobile == whatsApptMobile) {
+            tv_Mobile.visibility = View.GONE
+            header_linearlayout_line.visibility = View.GONE
+            tv_WhatsApp.text = "What's App : $whatsApptMobile"
+        } else {
+            tv_Mobile.text = "Mobile : $parentMobile"
+            tv_WhatsApp.text = "What's App : $whatsApptMobile"
+        }
+
+        inboxGrid.setOnClickListener {
+            var intent = Intent(this, InboxActivity::class.java)
+            intent.putExtra("PID", PID)
+            intent.putExtra("parentName", parentName)
+            intent.putExtra("S_ID", SID)
+
+            startActivity(intent)
+
+        }
+
+    }
+
+
+    private fun GetSliderImage() {
+
+
+        try {
+
+
+            var phpApiInterface: PhpApiInterface = ApiClientPhp.getClient().create(
+                PhpApiInterface::class.java
+            )
+
+            var call: Call<APIResponse> = phpApiInterface.GetSliderImage(SID.toInt())
+
+            call.enqueue(object : Callback<APIResponse> {
+                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                    println("faile  ")
+                }
+
+                override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+
+                    var result = response.body()
+
+                    var intsizeresult = response.body()!!.data1!!.size
+
+
+                    println("intsizeresult  " + result!!.data1!!.size)
+
+
+
+                    result!!.data1!!.size
+
+
+                    println("success  " + result!!.data1!![0].Url)
+
+                    if (result!!.data1!!.size > 1) {
+                        img1 = result!!.data1!![0].Url
+                        img2 = result!!.data1!![1].Url
+                        img3 = result!!.data1!![2].Url
+                        img4 = result!!.data1!![3].Url
+                        img5 = result!!.data1!![4].Url
+
+                        viewPagerMethod(img1, img2, img3, img4, img5)
+                    } else {
+                        println("not greater")
+
+                        viewPagerMethod(
+                            "http://dmimsdu.in/web/api_cubs/viewpager_image/common_img.jpg",
+                            "http://dmimsdu.in/web/api_cubs/viewpager_image/sos-atrey__1.jpg",
+                            "http://dmimsdu.in/web/api_cubs/viewpager_image/sos-atrey__2.jpg",
+                            "http://dmimsdu.in/web/api_cubs/viewpager_image/sos-atrey__3.jpg",
+                            "http://dmimsdu.in/web/api_cubs/viewpager_image/sos-atrey__4.jpg"
+                        )
+                    }
+
+
+                    // println(img1+","+img2+","+img3+","+img4+","+img5)
+
+
+                    //     viewPagerMethod(img1,img2,img3,img4,img5)
+                }
+
+            })
+
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+
+        }
+
+
+    }
+
+    private fun viewPagerMethod(
+        imgdata1: String,
+        imgdata2: String,
+        imgdata3: String,
+        imgdata4: String,
+        imgdata5: String
+    ) {
+
+
+        val urls = arrayOf(
+            imgdata1, imgdata2, imgdata3, imgdata4, imgdata5
+        )
+
+
+        println("data showing" + imgdata1)
+        println("getting urls " + urls)
         //ViewPager
-        val viewPagerAdapter = ViewPagerAdapter(this)
+        val viewPagerAdapter = ViewPagerAdapter(this, urls)
         viewPager.adapter = viewPagerAdapter
         dotsCount = viewPagerAdapter.count
         dots = arrayOfNulls<ImageView>(dotsCount)
@@ -160,100 +364,6 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val timer = Timer()
         timer.scheduleAtFixedRate(MyTimerTask(), 2000, 4000)
 
-
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
-        val headerView: View = navigationView.getHeaderView(0)
-        val tv_parentName = headerView.findViewById(R.id.tv_parentName) as TextView
-        val tv_Email = headerView.findViewById(R.id.tv_Email) as TextView
-
-        val tv_Mobile = headerView.findViewById(R.id.tv_Mobile) as TextView
-        val tv_WhatsApp = headerView.findViewById(R.id.tv_WhatsApp) as TextView
-        val header_linearlayout_line = headerView.findViewById(R.id.header_linearlayout_line) as LinearLayout
-
-        val tv_ChildName = headerView.findViewById(R.id.tv_ChildName) as TextView
-        val tv_School = headerView.findViewById(R.id.tv_School) as TextView
-        val tv_Class = headerView.findViewById(R.id.tv_Class) as TextView
-
-
-        ////Code for Setting Details
-
-//        val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
-//        Uid          = mypref.getString("ID", null)
-//        parentName   = mypref.getString("Parent_NAME", null)
-//        parentMobile = mypref.getString("Parent_Mobile", null)
-//        parentEmail  = mypref.getString("Parent_EMAIL", null)
-//        childName    = mypref.getString("Child_NAME", null)
-//        schoolClass  = mypref.getString("School_CLASS", null)
-//        schoolName   = mypref.getString("School_NAME", null)
-//
-//
-//
-
-
-        ////Code for Setting Details
-
-        val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
-        PID = mypref.getString("PID", null)
-        parentName = mypref.getString("Parent_NAME", null)
-        parentMobile = mypref.getString("Parent_Mobile", null)
-        parentEmail = mypref.getString("Parent_EMAIL", null)
-        childName = mypref.getString("Child_NAME", null)
-        Address = mypref.getString("Address", null)
-        schoolClass = mypref.getString("School_CLASS", null)
-        schoolName = mypref.getString("School_NAME", null)
-        enquiryDate = mypref.getString("RegistrationDate", null)
-
-        UserRole = mypref.getString("UserRole", null)
-        SID = mypref.getString("SID", null)
-        whatsApptMobile = mypref.getString("Whatsapp_mno", null)
-        coMobile = mypref.getString("Co_mobile", null)
-        couns_id = mypref.getString("couns_id", null)
-        TOKEN_ID = mypref.getString("TOKEN_ID", null)
-
-        InsertToken(
-            PID,
-            TOKEN_ID,
-            parentName,
-            schoolName,
-            SID,
-            couns_id,
-            schoolClass,
-            parentMobile,
-            parentEmail,
-            whatsApptMobile,
-            UserRole,
-            enquiryDate,
-            "",
-            ""
-        )
-
-        tv_parentName.text="Parent Name : $parentName"
-        tv_Email.setText("Email : $parentEmail")
-
-        tv_ChildName.setText("Child Name : $childName")
-        tv_School.setText("School : $schoolName")
-        tv_Class.setText("Class : $schoolClass")
-
-        if (parentMobile == whatsApptMobile){
-            tv_Mobile.visibility=View.GONE
-            header_linearlayout_line.visibility=View.GONE
-            tv_WhatsApp.text="What's App : $whatsApptMobile"
-        }else
-        {
-            tv_Mobile.text="Mobile : $parentMobile"
-            tv_WhatsApp.text="What's App : $whatsApptMobile"
-        }
-
-        inboxGrid.setOnClickListener {
-            var intent = Intent(this, InboxActivity::class.java)
-            intent.putExtra("PID",PID)
-            intent.putExtra("parentName",parentName)
-            intent.putExtra("S_ID",SID)
-
-            startActivity(intent)
-
-        }
-
     }
 
     private fun InsertToken(
@@ -305,6 +415,7 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
     }
+
 
     inner class MyTimerTask : TimerTask() {
 

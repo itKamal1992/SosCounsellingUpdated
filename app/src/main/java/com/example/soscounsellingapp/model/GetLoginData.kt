@@ -32,5 +32,9 @@ class GetLoginData {
     var Co_mobno: String = "-"
     var userrole: String = "-"
 
+    var Url: String = "-"
+
+
+
 
 }

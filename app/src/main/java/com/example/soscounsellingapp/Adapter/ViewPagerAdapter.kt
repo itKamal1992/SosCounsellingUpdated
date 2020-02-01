@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.soscounsellingapp.R
 
 /**
@@ -14,8 +15,7 @@ import com.example.soscounsellingapp.R
  */
 //Class for ViewPager
 class ViewPagerAdapter(//Declaration
-    private val context: Context
-) : PagerAdapter() {
+    private val context: Context,private val urls: Array<String>) : PagerAdapter() {
     private var layoutInflater: LayoutInflater? = null
 
     //Resource Provider - Images in Array
@@ -39,7 +39,8 @@ class ViewPagerAdapter(//Declaration
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater!!.inflate(R.layout.custom_layout, null)
         val imageView = view.findViewById(R.id.imageView) as ImageView
-        imageView.setImageResource(images[position])
+//        imageView.setImageResource(images[position])
+        Glide.with(context).load(urls[position]).into(imageView)
         view.setOnClickListener(View.OnClickListener { })
         val vp = container as ViewPager
         vp.addView(view, 0)
