@@ -2,6 +2,7 @@ package com.example.soscounsellingapp.dashboard
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -304,31 +305,33 @@ var notificationForground:NotificationForground
         viewPager.adapter = viewPagerAdapter
         dotsCount = viewPagerAdapter.count
         dots = arrayOfNulls<ImageView>(dotsCount)
-        for (i in 0 until dotsCount) {
-            dots!![i] = ImageView(this)
-            dots!![i]?.setImageDrawable(
+
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.M) {
+            for (i in 0 until dotsCount) {
+                dots!![i] = ImageView(this)
+                dots!![i]?.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.nonactive_dots
+                    )
+                )
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                params.setMargins(8, 0, 8, 0)
+                SliderDots.addView(dots!![i], params)
+                dots!![i]?.setOnClickListener { viewPager.currentItem = i }
+
+            }
+
+            dots!![0]?.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
-                    R.drawable.nonactive_dots
+                    R.drawable.active_dots
                 )
             )
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(8, 0, 8, 0)
-            SliderDots.addView(dots!![i], params)
-            dots!![i]?.setOnClickListener { viewPager.currentItem = i }
-
         }
-
-        dots!![0]?.setImageDrawable(
-            ContextCompat.getDrawable(
-                this,
-                R.drawable.active_dots
-            )
-        )
-
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrolled(
