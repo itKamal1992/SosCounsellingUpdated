@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -59,6 +60,7 @@ class ActivityContacts : AppCompatActivity()  {
 
         var mediacontroller = MediaController(this);
         mediacontroller.setAnchorView(post_video);
+        mediacontroller.isSaveEnabled=true
 
 
         post_video.setMediaController(mediacontroller);
@@ -86,6 +88,12 @@ class ActivityContacts : AppCompatActivity()  {
                 post_video.start();
             }
         })
+
+        post_video.setOnPreparedListener {
+            post_video.setZOrderOnTop(true);
+            post_video.setBackgroundColor(Color.TRANSPARENT);
+            post_video.setZOrderMediaOverlay(true)
+        }
 
 
 

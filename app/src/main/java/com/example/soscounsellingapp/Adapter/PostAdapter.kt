@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.media.ThumbnailUtils
 import android.net.Uri
@@ -22,7 +23,6 @@ import android.webkit.WebViewClient
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.soscounsellingapp.ApiCustomRequest.SosPostsRequest
 import com.example.soscounsellingapp.DataClass.CommentParameter
 import com.example.soscounsellingapp.DataClass.PostParameter
 import com.example.soscounsellingapp.Generic.GenericPublicVariable
@@ -31,12 +31,10 @@ import com.example.soscounsellingapp.Generic.GenericUserFunction
 import com.example.soscounsellingapp.Generic.InternetConnection
 import com.example.soscounsellingapp.R
 import com.example.soscounsellingapp.activity.Common_PDF_Viewer
-import com.example.soscounsellingapp.activity.InboxActivity
 import com.example.soscounsellingapp.common.Common
 import com.example.soscounsellingapp.model.APIResponse
 import com.google.android.material.snackbar.Snackbar
 import dmax.dialog.SpotsDialog
-import kotlinx.android.synthetic.main.activity_inbox.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,7 +44,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:String,FROM_DATE:String,TO_DATE:String,S_ID:String,postfor:String) :
+class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:String,FROM_DATE:String,TO_DATE:String,S_ID:String,postfor:String,parentName:String) :
     RecyclerView.Adapter<PostAdapter.ViewHolder>(), View.OnClickListener {
     var Pid: String = ""
     var parentName: String = ""
@@ -63,6 +61,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
     var postfor:String = ""
 
 
+
     init {
 
         this.postlist = postlist
@@ -74,6 +73,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         this.TO_DATE = TO_DATE
         this.S_ID = S_ID
         this.postfor = postfor
+        this.parentName=parentName
 
     }
 
@@ -135,23 +135,26 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                 holder.post_video.setVideoURI(Uri.parse(parameter.POST_URL));
                 holder.post_video.requestFocus();
 
-
-                val thumbnail = ThumbnailUtils.createVideoThumbnail(
-                    parameter.POST_URL,
-                    MediaStore.Images.Thumbnails.MINI_KIND
-                )
+//                holder.post_video.setZOrderOnTop(true);
 
 
-                val bitmapDrawable = BitmapDrawable(thumbnail)
-                holder.post_video.setBackgroundResource(R.drawable.ic_inbox)
+//                val thumbnail = ThumbnailUtils.createVideoThumbnail(
+//                    parameter.POST_URL,
+//                    MediaStore.Images.Thumbnails.MINI_KIND
+//                )
+
+
+//                val bitmapDrawable = BitmapDrawable(thumbnail)
+//                holder.post_video.setBackgroundResource(R.drawable.ic_inbox)
                 var displaymetrics = DisplayMetrics()
 //            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 //            ctx!!.resources.displaymetrics
 //            var h = displaymetrics.heightPixels;
 //            var w = displaymetrics.widthPixels;
-//
-//            holder.post_video.getLayoutParams().width = w;
-//            holder.post_video.getLayoutParams().height = h;
+////
+//            holder.post_video.getLayoutParams().width = w
+//            holder.post_video.getLayoutParams().height = h
+
                 holder.post_video.setOnCompletionListener(MediaPlayer.OnCompletionListener {
                     Toast.makeText(ctx, "Thank you for Watching Video", Toast.LENGTH_SHORT).show();
 //                if (index++ == arrayList.size) {
@@ -164,10 +167,15 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 //                }
                 })
 
-                holder.post_video.setOnErrorListener(MediaPlayer.OnErrorListener { mp, what, extra ->
-                    // do something when an error is occur during the video playback
-                    false
-                })
+//                holder.post_video.setOnErrorListener(MediaPlayer.OnErrorListener { mp, what, extra ->
+//                    // do something when an error is occur during the video playback
+//                    false
+//                })
+
+                holder.post_video.setOnPreparedListener{
+                    holder.post_video.setZOrderOnTop(false);
+                    holder.post_video.setBackgroundColor(Color.TRANSPARENT);
+                }
 
 
             }
@@ -257,9 +265,8 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                     "" + holder.edit_add_comments.text.toString(),
                     "" + sdf.format(cal.time).toString(),
                     "" + parameter.ParentName,
-                    ""+holder.com_against,
+                    holder,
                     position
-
                 )
             } else {
                 val snackbar = Snackbar
@@ -273,7 +280,11 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         }
 
         holder.txt_com_against.setOnClickListener {
-            CommentedBy(parameter.commentAgainst, holder.txt_com_against,holder)
+            CommentedBy(
+                parameter.commentAgainst,
+                holder.txt_com_against,
+                holder
+            )
         }
 
 //        p0.camera_image.setImageResource(parameter.)
@@ -405,11 +416,11 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         if (InternetConnection.checkConnection(ctx!!)) {
 
 
-            val dialog: android.app.AlertDialog =
-                SpotsDialog.Builder().setContext(ctx!!).build()
-            dialog.setMessage("Like ...")
-            dialog.setCancelable(false)
-            dialog.show()
+//            val dialog: android.app.AlertDialog =
+//                SpotsDialog.Builder().setContext(ctx!!).build()
+//            dialog.setMessage("Like ...")
+//            dialog.setCancelable(false)
+//            dialog.show()
 
 
             try {
@@ -428,7 +439,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                     data
                 ).enqueue(object : Callback<APIResponse> {
                     override fun onFailure(call: Call<APIResponse>, t: Throwable) {
-                        dialog.dismiss()
+//                        dialog.dismiss()
                         GenericUserFunction.showNegativePopUp(
                             ctx!!,
                             t.message.toString()
@@ -439,7 +450,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                         call: Call<APIResponse>,
                         response: Response<APIResponse>
                     ) {
-                        dialog.dismiss()
+//                        dialog.dismiss()
                         if (response.code() == 200) {
                             var result = response.body()
                             getApiResult(postfor,itemPosition )
@@ -456,7 +467,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 
                 })
             } catch (ex: Exception) {
-                dialog.dismiss()
+//                dialog.dismiss()
                 ex.printStackTrace()
                 GenericUserFunction.showApiError(
                     ctx!!,
@@ -479,17 +490,17 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         COMMENT_DESC: String,
         CDATE: String,
         SENDER_NAME: String,
-        CAGN: String,
+        holder: ViewHolder,
         itemPosition:Int
     ) {
         if (InternetConnection.checkConnection(ctx!!)) {
 
 
-            val dialog: android.app.AlertDialog =
-                SpotsDialog.Builder().setContext(ctx!!).build()
-            dialog.setMessage("Comment ...")
-            dialog.setCancelable(false)
-            dialog.show()
+//            val dialog: android.app.AlertDialog =
+//                SpotsDialog.Builder().setContext(ctx!!).build()
+//            dialog.setMessage("Comment ...")
+//            dialog.setCancelable(false)
+//            dialog.show()
 
 
             try {
@@ -504,10 +515,10 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                     "" + COMMENT_DESC,
                     "" + CDATE,
                     "" + SENDER_NAME,
-                    "" + CAGN
+                    holder.com_against.toString()
                 ).enqueue(object : Callback<APIResponse> {
                     override fun onFailure(call: Call<APIResponse>, t: Throwable) {
-                        dialog.dismiss()
+//                        dialog.dismiss()
                         GenericUserFunction.showNegativePopUp(
                             ctx!!,
                             t.message.toString()
@@ -518,8 +529,9 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                         call: Call<APIResponse>,
                         response: Response<APIResponse>
                     ) {
-                        dialog.dismiss()
+//                        dialog.dismiss()
                         if (response.code() == 200) {
+                            holder.edit_add_comments.text.clear()
                             var result = response.body()
                             getApiResult(postfor,itemPosition)
 
@@ -536,7 +548,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 
                 })
             } catch (ex: Exception) {
-                dialog.dismiss()
+//                dialog.dismiss()
                 ex.printStackTrace()
                 GenericUserFunction.showApiError(
                     ctx!!,
@@ -676,10 +688,10 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                                                             com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                         }
                                                     }
-                                                    if(comments[i].SENDER_NAME==parentName){
+                                                    if(comments[j].SENDER_NAME==parentName){
 
                                                     }  else {
-                                                        parentsNam.add(comments[i].SENDER_NAME)
+                                                        parentsNam.add(comments[j].SENDER_NAME)
                                                     }
                                                 }
                                             }else
@@ -721,7 +733,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                                                         ""+result[i].SENDER_NAME,
                                                         ""+result[i].SENDER,
                                                         +result[i].LIKES,
-                                                        parentName,
+                                                        ""+parentName,
                                                         commentArray,
                                                         ""+result[i].LIKES_STATUS_PAR,
                                                         ""+result[i].LIKES_STATUS_COUS,
@@ -761,10 +773,10 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                                                                 com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                             }
                                                         }
-                                                        if(comments[i].SENDER_NAME==parentName){
+                                                        if(comments[j].SENDER_NAME==parentName){
 
                                                         }  else {
-                                                            parentsNam.add(comments[i].SENDER_NAME)
+                                                            parentsNam.add(comments[j].SENDER_NAME)
                                                         }
                                                     }
                                                 }else

@@ -334,10 +334,10 @@ class InboxActivity : AppCompatActivity() {
                                                         com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                 }
-                                                if(comments[i].SENDER_NAME==parentName){
+                                                if(comments[j].SENDER_NAME==parentName){
 
                                                 }  else {
-                                                    parentsNam.add(comments[i].SENDER_NAME)
+                                                    parentsNam.add(comments[j].SENDER_NAME)
                                                 }
                                             }
                                         }else
@@ -415,10 +415,10 @@ class InboxActivity : AppCompatActivity() {
                                                         com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                 }
-                                              if(comments[i].SENDER_NAME==parentName){
+                                              if(comments[j].SENDER_NAME==parentName){
 
                                               }  else {
-                                                  parentsNam.add(comments[i].SENDER_NAME)
+                                                  parentsNam.add(comments[j].SENDER_NAME)
                                               }
                                             }
                                         }else
@@ -474,7 +474,7 @@ class InboxActivity : AppCompatActivity() {
 
                                 val adapter =
                                     PostAdapter(postParameterArray, this@InboxActivity,PID,select_from_date!!.text.toString(),
-                                        select_to_date!!.text.toString(),S_ID,postfor)
+                                        select_to_date!!.text.toString(),S_ID,postfor,parentName)
                                 if (postParameterArray.isEmpty()) {
 //                                    if (!isFinishing){ postParameterArray.clear()
                                     postParameterArray.clear()

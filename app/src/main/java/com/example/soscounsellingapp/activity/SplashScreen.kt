@@ -222,6 +222,7 @@ class SplashScreen : AppCompatActivity() {
                 this@SplashScreen,
                 DashboardUser::class.java
             )
+//            var intent = Intent(this@SplashScreen,ActivityContacts::class.java)
             startActivity(intent)
 
         } else {
