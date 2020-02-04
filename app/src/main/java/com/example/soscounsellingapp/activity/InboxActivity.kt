@@ -323,6 +323,7 @@ class InboxActivity : AppCompatActivity() {
                                                     if (comments[j].CAGN!="Reply to post"){
                                                         com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }else {
+
                                                         com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                 }else

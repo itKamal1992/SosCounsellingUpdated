@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.example.soscounsellingapp.Generic.GenericUserFunction
 import com.example.soscounsellingapp.R
 import com.example.soscounsellingapp.common.Common
 import com.example.soscounsellingapp.dashboard.DashboardUser
@@ -43,29 +44,30 @@ class MainActivity : AppCompatActivity() {
     var userName: String = ""
     var password: String = ""
 
-    var email: String = ""
-    var mobile: String = ""
-    override fun onCreate(savedInstanceState: Bundle?) {
+    var email  : String = ""
+    var mobile : String = ""
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//  GenericUserFunction.showPositivePopUp(this,
+//  getString(R.string.failureNoInternetErr)
 
-
+// GenericUserFunction.showNegativePopUp(this,"Hello")
 
         mServices = Common.getAPI()
 
         val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
         val editor = mypref.edit()
 
-
         btn_newRegistration.setOnClickListener {
             val intent = Intent(this@MainActivity, NewRegistration::class.java)
             startActivity(intent)
-
-//         getClg()
-//            getVersion()
+//    getClg()
+//    getVersion()
 
         }
-
 
         auth = FirebaseAuth.getInstance()
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 val token = task.result!!.token
                 //saveToken(token)
                 TOKEN_ID = token
-                editor.putString("TOKEN_ID",TOKEN_ID)
+                editor.putString("TOKEN_ID", TOKEN_ID)
                 editor.apply()
 
                 println("Token :--> $token")
@@ -96,25 +98,24 @@ class MainActivity : AppCompatActivity() {
             if (userName.equals(""))
             {
                 et_username.setError("Please enter username")
-            }else if (password.length<8)
+            } else if (password.length < 8)
             {
                 et_password.setError("Please enter valid password")
-            }else
+            } else
             {
                 userLogin()
             }
-
-
         }
-
         //  startActivity(getIntent())
     }
-    private fun userLogin() {
 
-        try {
+    private fun userLogin()
+    {
+        try
+        {
             val dialog: android.app.AlertDialog =
                 SpotsDialog.Builder().setContext(this).build()
-            dialog.setMessage("Please Wait!!! \nwhile we are checking credential")
+            dialog.setMessage("Please Wait!!! \n while we are checking credential")
             dialog.setCancelable(false)
             dialog.show()
 
@@ -135,36 +136,28 @@ class MainActivity : AppCompatActivity() {
                         toast.view = view
                         toast.show()
                         dialog.dismiss()
-
-
                     }
-
 
                     override fun onResponse(
                         call: Call<GetLoginData>,
                         response: Response<GetLoginData>
                     ) {
-
-
-
 //                        val result: APIResponse? = response.body()
                         var result = response.body()
                         var parent_name = response.body()!!.parent_name
                         println("response.body()!!.ResponseCode  " + result!!.address)
                         println("result  " + response.body()!!)
-                        if (   result!!.pid==null)
+                        if (result!!.pid == null)
                         {
-
                             val toast = Toast(applicationContext)
                             toast.duration = Toast.LENGTH_LONG
 
-                            val inflater =
-                                applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                            val inflater = applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                             val view: View = inflater.inflate(R.layout.toast1, null)
                             toast.view = view
                             toast.show()
                             dialog.dismiss()
-                        }else
+                        } else
                         {
                             saveData(
                                 result.pid,
@@ -175,48 +168,28 @@ class MainActivity : AppCompatActivity() {
                                 result.address,
                                 result.school,
                                 result.class_name,
-                                result.enq_date ,
+                                result.enq_date,
                                 result.userrole,
                                 result.s_id,
                                 result.w_mobno,
                                 result.Co_mobno,
                                 result.couns_id
-
-
                             )
 
                             dialog.dismiss()
-
-
-
-
-
-
-
                             val intent = Intent(this@MainActivity, DashboardUser::class.java)
                             startActivity(intent)
                         }
-
-
-
-
                     }
                 })
-
-
         } catch (ex: Exception) {
             ex.printStackTrace()
             println("Exception catch 2")
         }
     }
 
-
-
-
     /* private fun userLogin() {
-
-
-         try {
+  try {
 
              val dialog: android.app.AlertDialog =
                  SpotsDialog.Builder().setContext(this).build()
@@ -297,7 +270,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun getVersion() {
 
-
         try {
 
             var phpApiInterface: PhpApiInterface = ApiClientPhp.getClient().create(
@@ -325,15 +297,10 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             })
-
-
         } catch (ex: Exception) {
             ex.printStackTrace()
-
         }
     }
-
-
 
 
     private fun saveData(
@@ -347,15 +314,13 @@ class MainActivity : AppCompatActivity() {
         School_CLASS: String,
         Date: String,
         UserRole: String,
-        Sid:String,
-        Whatsapp_mno:String,
-        Co_mobile:String,
-        couns_id:String
+        Sid: String,
+        Whatsapp_mno: String,
+        Co_mobile: String,
+        couns_id: String
     ) {
-
         val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
         val editor = mypref.edit()
-
 
         editor.putString("PID", ID)
         editor.putString("Parent_NAME", Parent_NAME)
@@ -373,8 +338,6 @@ class MainActivity : AppCompatActivity() {
         editor.putString("Co_mobile", Co_mobile)
         editor.putString("couns_id", couns_id)
 
-
-
         editor.apply()
     }
 
@@ -383,6 +346,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         exitDialog()
     }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun exitDialog() {
         val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this)

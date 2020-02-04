@@ -306,7 +306,7 @@ var notificationForground:NotificationForground
         dotsCount = viewPagerAdapter.count
         dots = arrayOfNulls<ImageView>(dotsCount)
 
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.M) {
+
             for (i in 0 until dotsCount) {
                 dots!![i] = ImageView(this)
                 dots!![i]?.setImageDrawable(
@@ -331,7 +331,7 @@ var notificationForground:NotificationForground
                     R.drawable.active_dots
                 )
             )
-        }
+
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrolled(

@@ -46,6 +46,8 @@ class GenericUserFunction {
             GenericPublicVariable.CustDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             GenericPublicVariable.CustDialog.show()
 
+
+
         }
 
         fun showNegativePopUp(
