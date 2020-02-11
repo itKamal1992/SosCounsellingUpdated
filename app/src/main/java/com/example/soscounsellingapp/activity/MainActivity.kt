@@ -6,6 +6,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -27,6 +30,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Double.parseDouble
+import java.util.*
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -46,6 +51,8 @@ class MainActivity : AppCompatActivity() {
 
     var email  : String = ""
     var mobile : String = ""
+
+    var usernameDataType:String="email"
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -88,6 +95,36 @@ class MainActivity : AppCompatActivity() {
         et_username = findViewById(R.id.et_username)
         et_password = findViewById(R.id.et_password)
 
+        et_username.addTextChangedListener(object:TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+               // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+               // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                try {
+                    val num = parseDouble(s.toString())
+                    println("input is  number >>> $count")
+                    if (s!!.length>10){
+//                       Toast.makeText(this@MainActivity,"You have reached ",Toast.LENGTH_SHORT).show()
+                        et_username.setText(s.subSequence(0,10))
+                        et_username.setSelection(et_username.text.toString().length)
+                    }
+                    usernameDataType="number"
+                } catch (e: NumberFormatException) {
+                    println("input is  string >>> $count")
+
+                    usernameDataType="email"
+
+                }
+            }
+
+        })
+
 
 
         btn_Login.setOnClickListener {
@@ -97,10 +134,29 @@ class MainActivity : AppCompatActivity() {
 
             if (userName.equals(""))
             {
-                et_username.setError("Please enter username")
-            } else if (password.length < 8)
+                et_username.requestFocus()
+                et_username.setError("Please enter valid Email or Mobile No")
+                return@setOnClickListener
+            }
+
+            if (usernameDataType=="number" && userName.length<10){
+                et_username.requestFocus()
+                et_username.setError("Please enter valid Mobile No")
+                return@setOnClickListener
+            }
+
+            if (usernameDataType=="email" && !CheckEmail(userName) ){
+                et_username.requestFocus()
+                et_username.setError("Please enter valid Email")
+                return@setOnClickListener
+            }
+
+
+            else if (password.length < 8)
             {
-                et_password.setError("Please enter valid password")
+                et_password.requestFocus()
+                et_password.error="Please enter valid password"
+                return@setOnClickListener
             } else
             {
                 userLogin()
@@ -371,5 +427,9 @@ class MainActivity : AppCompatActivity() {
         alert.show()
     }
 
+    fun CheckEmail(email:String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        println("check email  " + return Patterns.EMAIL_ADDRESS.matcher(email).matches())
+    }
 
 }
