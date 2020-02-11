@@ -22,13 +22,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.TestVideoActivity"></activity>
+        <activity android:name=".activity.FullVideoViewActivity"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".activity.TestVideoActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.Common_PDF_Viewer"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.InboxActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.ActivityContacts" />
         <activity
             android:name=".dashboard.DashboardUser"

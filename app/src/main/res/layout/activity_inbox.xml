@@ -77,14 +77,18 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        >
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:layout_gravity="left"
                             android:gravity="center_vertical|center_horizontal"
                             android:layout_height="wrap_content"
                             android:text="From Date"
-                            android:fontFamily="@font/comic"/>
+                            android:fontFamily="@font/comic"
+                            android:drawableLeft="@drawable/ic_touch_app_black_24dp"
+                            android:drawableStart="@drawable/ic_touch_app_black_24dp"/>
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:id="@+id/select_from_date"
@@ -103,7 +107,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center_vertical"
-                        android:onClick="clickToDataPicker">
+                        android:onClick="clickToDataPicker"
+                        android:background="?android:attr/selectableItemBackground">
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:layout_gravity="left"
@@ -112,7 +117,9 @@
                             android:layout_height="wrap_content"
                             android:paddingLeft="7dp"
                             android:text="To Date"
-                            android:fontFamily="@font/comic"/>
+                            android:fontFamily="@font/comic"
+                            android:drawableLeft="@drawable/ic_touch_app_black_24dp"
+                            android:drawableStart="@drawable/ic_touch_app_black_24dp"/>
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:id="@+id/select_to_date"
@@ -185,7 +192,12 @@
                 android:text="Common Posts"
                 android:layout_weight="1"
                 android:textAllCaps="false"
-                android:fontFamily="@font/comic"/>
+                android:fontFamily="@font/comic"
+                android:textColor="@color/navajo_white"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:background="@drawable/btn_grey_round"
+                android:layout_margin="5dp"/>
             <Button
                 android:id="@+id/btn_selfPosts"
                 android:layout_width="match_parent"
@@ -193,7 +205,12 @@
                 android:text="Your's Posts"
                 android:layout_weight="1"
                 android:textAllCaps="false"
-                android:fontFamily="@font/comic"/>
+                android:fontFamily="@font/comic"
+                android:textColor="@color/navajo_white"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:background="@drawable/btn_grey_round"
+                android:layout_margin="5dp"/>
 
 
         </LinearLayout>

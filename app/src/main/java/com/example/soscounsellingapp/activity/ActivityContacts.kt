@@ -59,41 +59,41 @@ class ActivityContacts : AppCompatActivity()  {
         post_pdf.visibility=View.GONE
 
         var mediacontroller = MediaController(this);
-        mediacontroller.setAnchorView(post_video);
-        mediacontroller.isSaveEnabled=true
-
-
-        post_video.setMediaController(mediacontroller);
-        post_video.setVideoURI(Uri.parse(arrayList.get(index)));
-        post_video.requestFocus();
+//        mediacontroller.setAnchorView(post_video);
+//        mediacontroller.isSaveEnabled=true
+//
+//
+//        post_video.setMediaController(mediacontroller);
+//        post_video.setVideoURI(Uri.parse(arrayList.get(index)));
+//        post_video.requestFocus();
 
         var displaymetrics =  DisplayMetrics()
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         var h = displaymetrics.heightPixels;
         var w = displaymetrics.widthPixels;
 
-        post_video.getLayoutParams().width = w;
-        post_video.getLayoutParams().height = h;
-
-
-
-        post_video.setOnCompletionListener(MediaPlayer.OnCompletionListener {
-            Toast.makeText(getApplicationContext(), "Video over", Toast.LENGTH_SHORT).show();
-            if (index++ == arrayList.size) {
-                index = 0;
-                it.release();
-                Toast.makeText(getApplicationContext(), "Video over", Toast.LENGTH_SHORT).show();
-            } else {
-                post_video.setVideoURI(Uri.parse(arrayList.get(index)));
-                post_video.start();
-            }
-        })
-
-        post_video.setOnPreparedListener {
-            post_video.setZOrderOnTop(true);
-            post_video.setBackgroundColor(Color.TRANSPARENT);
-            post_video.setZOrderMediaOverlay(true)
-        }
+//        post_video.getLayoutParams().width = w;
+//        post_video.getLayoutParams().height = h;
+//
+//
+//
+//        post_video.setOnCompletionListener(MediaPlayer.OnCompletionListener {
+//            Toast.makeText(getApplicationContext(), "Video over", Toast.LENGTH_SHORT).show();
+//            if (index++ == arrayList.size) {
+//                index = 0;
+//                it.release();
+//                Toast.makeText(getApplicationContext(), "Video over", Toast.LENGTH_SHORT).show();
+//            } else {
+//                post_video.setVideoURI(Uri.parse(arrayList.get(index)));
+//                post_video.start();
+//            }
+//        })
+//
+//        post_video.setOnPreparedListener {
+//            post_video.setZOrderOnTop(true);
+//            post_video.setBackgroundColor(Color.TRANSPARENT);
+//            post_video.setZOrderMediaOverlay(true)
+//        }
 
 
 

@@ -9,344 +9,369 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-<!--    app:cardBackgroundColor="@color/notification_default_color"-->
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/colortop"
-
-    app:cardCornerRadius="20dp"
-    >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <LinearLayout
+        <!--    app:cardBackgroundColor="@color/notification_default_color"-->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10"
+            app:cardBackgroundColor="@color/colorWhiteShade"
+
+            app:cardCornerRadius="20dp"
             >
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_weight="4"
-            android:id="@+id/txt_post_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date : 21-01-2020"
-            android:elegantTextHeight="true"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:fontFamily="@font/comic"
-
-            />
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_weight="6"
-            android:id="@+id/txt_from_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Post by : Admin"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:fontFamily="@font/comic"/>
-        </LinearLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_weight="1"
-        android:id="@+id/txt_schoolName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/comic"
-        android:text="School : SOS-Atrey Layout"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-
-
-
-
-    </LinearLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_post_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Get IPAD for free "
-        android:textColor="@color/sandy_brown"
-        android:textStyle="bold"
-        android:fontFamily="@font/comic"
-        android:gravity="center_horizontal"/>
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/txt_post_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="On admission in 5th and above every student will get IPAD with 30% off to study our latest customized course material.Be ready to grab this opportunity and make your child to enjoy learning with technology."
-            android:textColor="@color/white"
-            android:fontFamily="@font/comic"/>
-        <ImageView
-            android:id="@+id/post_Image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/background_loginnew"/>
-        <FrameLayout
-            android:id="@+id/post_pdf_framelayout"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-            <WebView
-                android:id="@+id/post_pdf"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                />
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/post_pdf_layout"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="center">
-                <ProgressBar
-                    android:id="@+id/post_pdf_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                </ProgressBar>
-
-            </LinearLayout>
-        </FrameLayout>
-
-
-        <VideoView
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/post_video"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal">
+                android:padding="10dp">
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="30dp">
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:id="@+id/img_post_like"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/ic_like"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.0" />
-
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/txt_post_like_count"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@drawable/item_count_num"
-                                android:fontFamily="@font/comic"
-                                android:text="122"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="8dp"
-                                android:gravity="center_horizontal|center_vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="1.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.2" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </FrameLayout>
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_marginLeft="4dp"
-                        android:id="@+id/txt_post_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Like"
-                        android:fontFamily="@font/comic"
-                        android:textSize="18dp"/>
-
-                </LinearLayout>
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/img_post_share"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_share" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_marginLeft="4dp"
-                        android:id="@+id/txt_post_share"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Share"
-                        android:fontFamily="@font/comic"
-                        android:textSize="18dp"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/txt_coments_layouts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        >
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_weight="4"
+                            android:id="@+id/txt_post_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Date : 21-01-2020"
+                            android:elegantTextHeight="true"
+                            android:textColor="@color/black1"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/comic"
+
+                            />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_weight="6"
+                            android:id="@+id/txt_from_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Post by : Admin"
+                            android:textColor="@color/black1"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/comic"/>
+                    </LinearLayout>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_weight="1"
+                        android:id="@+id/txt_schoolName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/comic"
+                        android:text="School : SOS-Atrey Layout"
+                        android:textColor="@color/black1"
+                        android:textStyle="bold" />
+
+
+
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_post_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Get IPAD for free "
+                    android:textColor="@color/sandy_brown"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/comic"
+                    android:gravity="center_horizontal"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txt_post_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="On admission in 5th and above every student will get IPAD with 30% off to study our latest customized course material.Be ready to grab this opportunity and make your child to enjoy learning with technology."
+                    android:textColor="@color/black1"
+                    android:fontFamily="@font/comic"/>
+                <ImageView
+                    android:id="@+id/post_Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/background_loginnew"/>
+                <FrameLayout
+                    android:id="@+id/post_pdf_framelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+                    <WebView
+                        android:id="@+id/post_pdf"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/post_pdf_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:gravity="center">
+                        <ProgressBar
+                            android:id="@+id/post_pdf_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        </ProgressBar>
+
+                    </LinearLayout>
+                </FrameLayout>
+
+
+
+                <FrameLayout
+                    android:id="@+id/post_video_framelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <VideoView
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/post_video"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:background="@color/black"
+                        />
+                    <ProgressBar
+                        android:id="@+id/post_video_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal">
+
+                    </ProgressBar>
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="5dp"
                     >
 
-                    <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="30dp">
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start">
+                        <LinearLayout
+                            android:id="@+id/ln_layout_like"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <FrameLayout
+                                android:layout_width="40dp"
+                                android:layout_height="30dp">
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/img_post_like"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/ic_like"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.0" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/txt_post_like_count"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:background="@drawable/item_count_num"
+                                        android:fontFamily="@font/comic"
+                                        android:text="122"
+                                        android:textColor="@color/black"
+                                        android:textStyle="bold"
+                                        android:textSize="8dp"
+                                        android:gravity="center_horizontal|center_vertical"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="1.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.2" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </FrameLayout>
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_marginLeft="4dp"
+                                android:id="@+id/txt_post_like"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Like"
+                                android:fontFamily="@font/comic"
+                                android:textSize="18dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end">
+                        <LinearLayout
+                            android:id="@+id/ln_layout_share"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/img_post_comment"
+                                android:id="@+id/img_post_share"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@drawable/ic_comment"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginTop="10dp"/>
+                                android:src="@drawable/ic_share" />
+
                             <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/txt_post_comment_count"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@drawable/item_count_num"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="5dp"
+                                android:id="@+id/txt_post_share"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Share"
                                 android:fontFamily="@font/comic"
-                                android:text="122"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="8dp"
-                                android:gravity="center_horizontal|center_vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="1.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.2" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout></FrameLayout>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/txt_titleComments"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Comments"
-                        android:soundEffectsEnabled="true"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/comic"
-                        android:textSize="18dp"
-                        android:layout_marginLeft="5dp"/>
+                                android:textSize="18dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
-            </LinearLayout>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txt_post_comments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="On admission in 5th and above every student will get IPAD with 30% off to study our latest customized course material.Be ready to grab this opportunity and make your child to enjoy learning with technology."
-                android:textColor="@color/white"
-                android:fontFamily="@font/comic"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/txt_com_against"
-                    android:layout_weight="4.7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="\@"
-                    android:fontFamily="@font/comic"
-                    />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_weight="1.1"
-                    android:id="@+id/edit_add_comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="add comment"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/comic"
-                    android:maxLines="5"/>
                 <LinearLayout
-                    android:layout_weight="4.2"
+                    android:id="@+id/txt_coments_layouts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom">
-                    <Button
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            >
 
-                        android:id="@+id/btn_send_comments"
-                        android:gravity="bottom"
-                        android:layout_gravity="bottom"
-                        android:layout_width="40dp"
-                        android:layout_height="25dp"
-                        android:background="@drawable/ic_send_comment"/>
+                            <FrameLayout
+                                android:layout_width="40dp"
+                                android:layout_height="30dp">
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/img_post_comment"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/ic_comment"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:layout_marginTop="10dp"/>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/txt_post_comment_count"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:background="@drawable/item_count_num"
+                                        android:fontFamily="@font/comic"
+                                        android:text="122"
+                                        android:textColor="@color/black"
+                                        android:textStyle="bold"
+                                        android:textSize="8dp"
+                                        android:gravity="center_horizontal|center_vertical"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="1.0"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.2" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout></FrameLayout>
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txt_titleComments"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Comments"
+                                android:gravity="center_horizontal"
+                                android:textColor="@color/black1"
+                                android:fontFamily="@font/comic"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:layout_marginLeft="5dp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txt_post_comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="On admission in 5th and above every student will get IPAD with 30% off to study our latest customized course material.Be ready to grab this opportunity and make your child to enjoy learning with technology."
+                        android:textColor="@color/black1"
+                        android:fontFamily="@font/comic"
+                        android:layout_marginTop="5dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txt_com_against"
+                            android:layout_weight="4.7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="\@"
+                            android:fontFamily="@font/comic"
+                            />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_weight="1.1"
+                            android:id="@+id/edit_add_comments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="add comment"
+                            android:textColor="@color/black1"
+                            android:fontFamily="@font/comic"
+                            android:maxLines="5"/>
+                        <LinearLayout
+                            android:layout_weight="4.2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom">
+                            <Button
+
+                                android:id="@+id/btn_send_comments"
+                                android:gravity="bottom"
+                                android:layout_gravity="bottom"
+                                android:layout_width="40dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/ic_send_comment"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <!--            <com.google.android.material.bottomnavigation.BottomNavigationView-->
+                    <!--                android:id="@+id/bottom_navigation_view"-->
+                    <!--                android:layout_width="match_parent"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginTop="4dp"-->
+                    <!--                app:menu="@menu/activity_dashboard_main_drawer"-->
+                    <!--                app:itemBackground="@color/colortop"-->
+                    <!--                app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                app:layout_constraintEnd_toEndOf="parent" />-->
                 </LinearLayout>
             </LinearLayout>
-
-
-            <!--            <com.google.android.material.bottomnavigation.BottomNavigationView-->
-            <!--                android:id="@+id/bottom_navigation_view"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="4dp"-->
-            <!--                app:menu="@menu/activity_dashboard_main_drawer"-->
-            <!--                app:itemBackground="@color/colortop"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent" />-->
-        </LinearLayout>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 </LinearLayout>

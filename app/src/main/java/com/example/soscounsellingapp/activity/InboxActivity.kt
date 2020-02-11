@@ -1,14 +1,19 @@
 package com.example.soscounsellingapp.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
+import android.widget.Adapter
+import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soscounsellingapp.Adapter.PostAdapter
@@ -17,9 +22,10 @@ import com.example.soscounsellingapp.DataClass.CommentParameter
 import com.example.soscounsellingapp.DataClass.PostParameter
 import com.example.soscounsellingapp.Generic.GenericUserFunction
 import com.example.soscounsellingapp.Generic.InternetConnection
+import com.example.soscounsellingapp.Generic.SharedPreference
 import com.example.soscounsellingapp.R
 import com.example.soscounsellingapp.common.Common
-import com.example.soscounsellingapp.model.SchoolDataField
+import com.example.soscounsellingapp.dashboard.DashboardUser
 import com.example.soscounsellingapp.remote.IMyAPI
 import com.google.android.material.snackbar.Snackbar
 import dmax.dialog.SpotsDialog
@@ -34,6 +40,7 @@ import kotlin.collections.ArrayList
 //${comments[i].SENDER_NAME}
 //Sender Name/////
 class InboxActivity : AppCompatActivity() {
+    private var postParameterArray: ArrayList<PostParameter>? = null
     private var recyclerView: RecyclerView?=null
     var PID: String=""
     var S_ID: String=""
@@ -42,6 +49,8 @@ class InboxActivity : AppCompatActivity() {
 
     var cal = Calendar.getInstance()
     private lateinit var mServices: IMyAPI
+
+    var adapter:PostAdapter?=null
 
 
     @SuppressLint("WrongConstant")
@@ -209,6 +218,19 @@ class InboxActivity : AppCompatActivity() {
 //        }
     }
 
+
+
+    override fun onBackPressed() {
+
+        val mypref = SharedPreference(this)
+        mypref.save("mStatus","Yes")
+
+        postParameterArray!!.clear()
+        adapter!!.notifyDataSetChanged()
+
+              super.onBackPressed()
+    }
+
     fun clickFromDataPicker(view: View) {
         println(view)
         val c = Calendar.getInstance()
@@ -300,11 +322,11 @@ class InboxActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: Call<ArrayList<PostParameter>>,response: Response<ArrayList<PostParameter>>) {
-                        dialog.dismiss()
+
                         if (response.code() == 200) {
                             var result = response.body()
                             if (result!!.size>0){
-                                val postParameterArray = ArrayList<PostParameter>()
+                                postParameterArray = ArrayList<PostParameter>()
                                 for (i in 0..result!!.size - 1 ){
                                      if (postfor=="Your")
                                     {
@@ -321,18 +343,17 @@ class InboxActivity : AppCompatActivity() {
 //                                                comments[i].SENDER_NAME + comments[i].COMMENT_DESC
                                                 if (j==0) {
                                                     if (comments[j].CAGN!="Reply to post"){
-                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }else {
-
-                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                 }else
                                                 {
                                                     if (comments[j].CAGN!="Reply to post"){
-                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                     else {
-                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                 }
                                                 if(comments[j].SENDER_NAME==parentName){
@@ -361,7 +382,7 @@ class InboxActivity : AppCompatActivity() {
                                             commentAgainst.add(element)
                                         }
                                         if (result[i].PID=="SPE"){
-                                        postParameterArray.add(
+                                        postParameterArray!!.add(
                                             PostParameter(
                                                 ""+result[i].ID,
 
@@ -403,17 +424,18 @@ class InboxActivity : AppCompatActivity() {
 //                                                comments[i].SENDER_NAME + comments[i].COMMENT_DESC
                                                 if (j==0) {
                                                     if (comments[j].CAGN!="Reply to post"){
-                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }else {
-                                                        com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
+                                                    com.insert(0,"")
                                                 }else
                                                 {
                                                     if (comments[j].CAGN!="Reply to post"){
-                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                     else {
-                                                        com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                        com!!.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                     }
                                                 }
                                               if(comments[j].SENDER_NAME==parentName){
@@ -442,7 +464,7 @@ class InboxActivity : AppCompatActivity() {
                                             commentAgainst.add(element)
                                         }
                                         if (result[i].PID!="SPE"){
-                                            postParameterArray.add(
+                                            postParameterArray!!.add(
                                                 PostParameter(
                                                     ""+result[i].ID,
                                                     ""+PID,// getting user PID not from Response
@@ -468,18 +490,16 @@ class InboxActivity : AppCompatActivity() {
                                             )
                                         }
                                     }
-
-
-
                                 }
 
-                                val adapter =
-                                    PostAdapter(postParameterArray, this@InboxActivity,PID,select_from_date!!.text.toString(),
-                                        select_to_date!!.text.toString(),S_ID,postfor,parentName)
-                                if (postParameterArray.isEmpty()) {
+                                dialog.dismiss()
+                                adapter =
+                                    PostAdapter(postParameterArray!!, this@InboxActivity,PID,select_from_date!!.text.toString(),
+                                        select_to_date!!.text.toString(),S_ID,postfor,parentName,this@InboxActivity)
+                                if (postParameterArray!!.isEmpty()) {
 //                                    if (!isFinishing){ postParameterArray.clear()
-                                    postParameterArray.clear()
-                                    adapter.notifyDataSetChanged()
+                                    postParameterArray!!.clear()
+                                    adapter!!.notifyDataSetChanged()
                                     recyclerView!!.adapter = adapter
                                     GenericUserFunction.showOopsError(
                                         this@InboxActivity,
@@ -494,13 +514,14 @@ class InboxActivity : AppCompatActivity() {
 //                                    )
 //                                    recyclerView!!.addItemDecoration(mDividerItemDecoration)
 
-                                    recyclerView!!.adapter = adapter
+                                    recyclerView!!.adapter = adapter!!
 
                                 }
 
                             }
                             println(result)
                         } else {
+                            dialog.dismiss()
 
                         }
                         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

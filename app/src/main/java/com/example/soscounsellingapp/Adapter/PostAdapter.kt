@@ -1,22 +1,19 @@
 package com.example.soscounsellingapp.Adapter
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
+import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import android.text.Html
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -31,20 +28,37 @@ import com.example.soscounsellingapp.Generic.GenericUserFunction
 import com.example.soscounsellingapp.Generic.InternetConnection
 import com.example.soscounsellingapp.R
 import com.example.soscounsellingapp.activity.Common_PDF_Viewer
+import com.example.soscounsellingapp.activity.FullScreenMediaController
+import com.example.soscounsellingapp.activity.MyMediaController
+import com.example.soscounsellingapp.activity.TestVideoActivity
 import com.example.soscounsellingapp.common.Common
 import com.example.soscounsellingapp.model.APIResponse
 import com.google.android.material.snackbar.Snackbar
 import dmax.dialog.SpotsDialog
+import kotlinx.android.synthetic.main.layout_post_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:String,FROM_DATE:String,TO_DATE:String,S_ID:String,postfor:String,parentName:String) :
+class PostAdapter(
+    postParameter: ArrayList<PostParameter>,
+    context: Context,
+    PID: String,
+    FROM_DATE: String,
+    TO_DATE: String,
+    S_ID: String,
+    postfor: String,
+    parentName: String,
+    activity:Activity
+//    ,
+//    videoSurfaceContainer: FrameLayout
+) :
     RecyclerView.Adapter<PostAdapter.ViewHolder>(), View.OnClickListener {
     var Pid: String = ""
     var parentName: String = ""
@@ -59,6 +73,12 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
     var TO_DATE:String = ""
     var S_ID:String = ""
     var postfor:String = ""
+    var activity:Activity?=null
+
+//    private var player: MediaPlayer?=null
+//    private var controller: MyMediaController?=null
+//
+//    private var videoSurfaceContainer: FrameLayout?=null
 
 
 
@@ -73,13 +93,28 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         this.TO_DATE = TO_DATE
         this.S_ID = S_ID
         this.postfor = postfor
+
         this.parentName=parentName
+        this.activity=activity
+
+
+
+
+//        this.videoSurfaceContainer=videoSurfaceContainer
 
     }
+
+//    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+//        println("view detached >>> ")
+//        super.onViewDetachedFromWindow(holder)
+//    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.layout_post_item, parent, false)
+//        activity!!.onBackPressed()
         return ViewHolder(view, ctx!!, postlist)
     }
 
@@ -88,8 +123,16 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
     }
 
     override fun onBindViewHolder(holder: PostAdapter.ViewHolder, position: Int) {
-
         val parameter: PostParameter = postlist[position]
+
+//        controller = MyMediaController(holder.itemView.context )
+//        holder.videoUrl="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+
+
+//        holder.player?.setOnPreparedListener(holder.player)
+
+
+
         holder.txt_post_date?.text = parameter.POST_DATE_GEN
         holder.txt_schoolName?.text = parameter.SCHOOL_NAME
         holder.txt_from_user?.text = "Post by: Admin"
@@ -97,15 +140,17 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         holder.txt_post_text?.text = parameter.POST_DESCRIPTION
         if (parameter.ATTACH_TYPE.contains("No Attachment", ignoreCase = true)) {
             holder.post_Image.visibility = View.GONE
-            holder.post_video.visibility = View.GONE
+//            holder.post_video.visibility = View.GONE
             holder.post_pdf_framelayout.visibility = View.GONE
+            holder.post_video_framelayout.visibility = View.GONE
 
         } else {
             if (parameter.ATTACH_TYPE.contains("IMAGE", ignoreCase = true)) {
                 Glide.with(ctx).load(parameter.POST_URL).into(holder.post_Image)
                 holder.post_Image.visibility = View.VISIBLE
                 holder.post_pdf_framelayout.visibility = View.GONE
-                holder.post_video.visibility = View.GONE
+//                holder.post_video.visibility = View.GONE
+                holder.post_video_framelayout.visibility = View.GONE
 
             }
 
@@ -113,7 +158,8 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                 showPdf(holder.post_pdf, holder.post_pdf_progress, parameter.POST_URL, ctx!!)
                 holder.post_pdf_framelayout.visibility = View.VISIBLE
                 holder.post_Image.visibility = View.GONE
-                holder.post_video.visibility = View.GONE
+//                holder.post_video.visibility = View.GONE
+                holder.post_video_framelayout.visibility = View.GONE
             }
             holder.post_pdf_layout.setOnClickListener {
                 var intent: Intent = Intent(ctx, Common_PDF_Viewer::class.java)
@@ -123,19 +169,38 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
             }
 
             if (parameter.ATTACH_TYPE.equals("mp4", ignoreCase = true)) {
-                holder.post_video.visibility = View.VISIBLE
+                holder.post_video_framelayout.visibility = View.VISIBLE
+                holder.post_video_progress.visibility=View.VISIBLE
+//                holder.post_video.visibility = View.VISIBLE
                 holder.post_Image.visibility = View.GONE
                 holder.post_pdf_framelayout.visibility = View.GONE
 
-                var mediacontroller = MediaController(ctx);
+//                var mediacontroller = MediaController(ctx);
+                var mediacontroller=FullScreenMediaController(ctx!!,parameter.POST_URL,"AdaptorScreen")
                 mediacontroller.setAnchorView(holder.post_video);
-
 
                 holder.post_video.setMediaController(mediacontroller);
                 holder.post_video.setVideoURI(Uri.parse(parameter.POST_URL));
                 holder.post_video.requestFocus();
 
-//                holder.post_video.setZOrderOnTop(true);
+                holder.post_video.setZOrderOnTop(true);
+//                val dialog: android.app.AlertDialog =
+//                    SpotsDialog.Builder().setContext(ctx).build()
+//                dialog.setMessage("Please while while video is loading ")
+//                dialog.setCancelable(false)
+//                dialog.show()
+
+
+
+
+                 holder.post_video!!.setOnPreparedListener {
+//                    Toast.makeText(this, "on prepared", Toast.LENGTH_SHORT).show()
+//                    dialog.dismiss()
+                    holder.post_video_progress.visibility=View.GONE
+//                    holder.post_video.seekTo( 1000 );
+                    mediacontroller.hide()
+//                    holder.post_video!!.visibility = View.VISIBLE
+                }
 
 
 //                val thumbnail = ThumbnailUtils.createVideoThumbnail(
@@ -172,14 +237,30 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 //                    false
 //                })
 
-                holder.post_video.setOnPreparedListener{
-                    holder.post_video.setZOrderOnTop(false);
-                    holder.post_video.setBackgroundColor(Color.TRANSPARENT);
-                }
+//                holder.post_video.setOnPreparedListener{
+//                    holder.post_video.setZOrderOnTop(false);
+//                    holder.post_video.setBackgroundColor(Color.TRANSPARENT);
+//                }
 
 
+
+
+
+
+
+
+
+//        val videoController = MediaController(this)
+//                holder.player?.setDataSource(ctx, Uri.parse(parameter.POST_URL))
+//
+//                holder.videoUrl=parameter.POST_URL
+//                holder.videoSurfaceContainer.setOnClickListener {
+//                    holder.controller?.show()
+//                }
             }
         }
+
+
 
         holder.img_post_like.setImageResource(R.drawable.ic_like)
         holder.txt_post_like?.text = "Like"
@@ -187,23 +268,23 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 
         holder.txt_post_comment_count?.text = parameter.comment_count
 
-        holder.txt_titleComments?.text = "Comment"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.txt_titleComments.setText(
-                Html.fromHtml(
-                    "<html><h3><u>Comments</u></h3></html>",
-                    Html.FROM_HTML_MODE_COMPACT
-                )
-            );
-        } else {
-            holder.txt_titleComments.setText(Html.fromHtml("<html><h3><u>Comments</u></h3></html>"));
-        }
+        holder.txt_titleComments?.text = "Comment's"
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            holder.txt_titleComments.setText(
+//                Html.fromHtml(
+//                    "<html><h3><u>Comments</u></h3></html>",
+//                    Html.FROM_HTML_MODE_COMPACT
+//                )
+//            );
+//        } else {
+//            holder.txt_titleComments.setText(Html.fromHtml("<html><h3><u>Comments</u></h3></html>"));
+//        }
 
 
         holder.img_post_share.setImageResource(R.drawable.ic_share)
         holder.txt_post_share?.text = "Share"
 
-        holder.img_post_like.setOnClickListener {
+        holder.ln_layout_like.setOnClickListener {
             //            Toast.makeText(ctx,"like hit $position",Toast.LENGTH_SHORT).show()
             getLikeResult(
                 "" + parameter.PID,
@@ -220,8 +301,8 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 //            Toast.makeText(ctx, "comment hit $position", Toast.LENGTH_SHORT).show()
 //        }
 
-        holder.img_post_share.setOnClickListener {
-            Toast.makeText(ctx, "share hit $position", Toast.LENGTH_SHORT).show()
+        holder.ln_layout_share.setOnClickListener {
+//            Toast.makeText(ctx, "share hit $position", Toast.LENGTH_SHORT).show()
 
 //            var sendWhat=""
             var sendData = ""
@@ -286,7 +367,6 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                 holder
             )
         }
-
 //        p0.camera_image.setImageResource(parameter.)
 //        holder.bottom_navigation_menu.setOnNavigationItemSelectedListener {
 //
@@ -309,9 +389,11 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
     override fun onClick(v: View?) {
     }
 
-
+//,SurfaceHolder.Callback,
+//        MyMediaController.MediaPlayerControl,
+//        MediaPlayer.OnPreparedListener
     class ViewHolder(itemView: View, ctx: Context, list: List<PostParameter>) :
-        RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemView){
 
         val txt_post_date = itemView.findViewById<TextView>(R.id.txt_post_date)
         val txt_schoolName = itemView.findViewById<TextView>(R.id.txt_schoolName)
@@ -324,15 +406,22 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         val post_pdf = itemView.findViewById<WebView>(R.id.post_pdf)
         val post_video = itemView.findViewById<VideoView>(R.id.post_video)
 
+        val post_video_framelayout = itemView.findViewById<FrameLayout>(R.id.post_video_framelayout)
+        val post_video_progress = itemView.findViewById<ProgressBar>(R.id.post_video_progress)
+
         val post_pdf_framelayout = itemView.findViewById<FrameLayout>(R.id.post_pdf_framelayout)
         val post_pdf_layout = itemView.findViewById<LinearLayout>(R.id.post_pdf_layout)
         val post_pdf_progress = itemView.findViewById<ProgressBar>(R.id.post_pdf_progress)
+
 
 
         // Bottom part
         val img_post_like = itemView.findViewById<ImageView>(R.id.img_post_like)
         val txt_post_like = itemView.findViewById<TextView>(R.id.txt_post_like)
         val txt_post_like_count = itemView.findViewById<TextView>(R.id.txt_post_like_count)
+        val ln_layout_like = itemView.findViewById<LinearLayout>(R.id.ln_layout_like)
+        val ln_layout_share = itemView.findViewById<LinearLayout>(R.id.ln_layout_share)
+
 
         val txt_titleComments = itemView.findViewById<TextView>(R.id.txt_titleComments)
         val txt_post_comment_count= itemView.findViewById<TextView>(R.id.txt_post_comment_count)
@@ -348,6 +437,16 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         val txt_com_against = itemView.findViewById<TextView>(R.id.txt_com_against)
 
         var com_against:String="Reply to post"
+
+//        val videoSurface = itemView.videoSurface.holder
+//        val videoSurfaceContainer =itemView.findViewById<FrameLayout>(R.id.videoSurfaceContainer)
+
+//        val videoHolder = holder.videoSurface
+
+//        videoHolder.addCallback(c)
+//
+//        videoSurfaceContainer
+//        videoSurface
 //        val bottom_navigation_view =
 //            itemView.findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
 //        val bottom_navigation_menu =
@@ -367,9 +466,151 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 //            }
 //
 //        }
+//
+
+//        var ctx:Context?=null
+//        var videoUrl=""
+//        val player = MediaPlayer()
+////        holder.player?OnMediaTimeDiscontinuityListener
+//        val controller = MyMediaController(itemView.videoSurfaceContainer.context )
+////        videoSurfaceContainer=holder.videoSurfaceContainer
+//        init  {
+//            this.ctx=ctx
+//
+//            videoSurface.addCallback(this)
+////            this.videoSurfaceContainer=holder.videoSurfaceContainer
+//
+//            try {
+//                player?.setAudioStreamType(AudioManager.STREAM_MUSIC)
+////                player?.setDataSource(ctx, Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"))
+//
+//                player?.setOnPreparedListener(this)
+//                player?.setOnCompletionListener{
+//                    Toast.makeText(ctx, "Thankyou for Watching Video", Toast.LENGTH_SHORT).show();
+//                    player?.start()
+//                }
+//            } catch (e: IllegalArgumentException) {
+//                e.printStackTrace()
+//            } catch (e: SecurityException) {
+//                e.printStackTrace()
+//            } catch (e: IllegalStateException) {
+//                e.printStackTrace()
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//
+//        }
+
+
+//        player?.setDataSource(ctx, Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"))
+//        player?.setOnPreparedListener(this)
+
+
+
+//        override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+//
+//        }
+//
+//        override fun surfaceDestroyed(holder: SurfaceHolder?) {
+//
+//        }
+//
+//        override fun surfaceCreated(holder: SurfaceHolder?) {
+//            player!!.setDisplay(holder);
+//            player!!.prepareAsync();
+//        }
+//
+//        override fun onPrepared(mp: MediaPlayer?) {
+//            controller?.setMediaPlayer(this);
+//            controller?.setAnchorView(videoSurfaceContainer);
+////        player?.start();
+//        }
+//
+//        override fun start() {
+//            if (player!=null) {
+//                return player?.start()!!;
+//            }
+//        }
+//
+//        override fun pause() {
+//            if (player!=null) {
+//                return player?.pause()!!;
+//            }
+//        }
+//
+//        override fun getDuration(): Int {
+//            if (player!=null) {
+//                return player?.duration!!;
+//            }else{
+//                return 0
+//            }
+//        }
+//
+//        override fun getCurrentPosition(): Int {
+//            if (player!=null) {
+//                return player?.getCurrentPosition()!!;
+//            }else{
+//                return 0
+//            }
+//        }
+//
+//        override fun seekTo(pos: Int) {
+//            if (player!=null) {
+//                return player?.seekTo(pos)!!;
+//            }
+//        }
+//
+//        override fun isPlaying(): Boolean {
+//            if (player!=null) {
+//                return player?.isPlaying()!!;
+//            }else{
+//                return false
+//            }
+//        }
+//
+//        override fun getBufferPercentage(): Int {
+//            return 0;
+//        }
+//
+//
+//
+//        override fun canPause(): Boolean {
+//            return true
+//        }
+//
+//        override fun canSeekBackward(): Boolean {
+//            return true
+//        }
+//
+//        override fun canSeekForward(): Boolean {
+//            return true
+//        }
+//
+//
+//        override fun toggleFullScreen() {
+////            var intent = Intent(ctx, TestVideoActivity::class.java)
+////            ctx!!.startActivity(intent)
+//
+//            player.pause()
+//            var intent = Intent(ctx, TestVideoActivity::class.java)
+//            intent.putExtra("videoUrl", videoUrl)
+//
+//            ctx!!.startActivity(intent)
+////        Toast.makeText(ctx,"Toggle Full",Toast.LENGTH_SHORT).show()
+//        }
+//
+//        override fun isFullScreen(): Boolean {
+////            if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+//            if (0 == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+//                return true
+//            }else {
+//                return false
+//            }
+//        }
 
 
     }
+
 
     fun showPdf(post_pdf: WebView, post_pdf_progress: ProgressBar, url: String, context: Context) {
         post_pdf_progress.visibility = View.VISIBLE
@@ -568,7 +809,8 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         item: ArrayList<String>,
         txtComAgainst: TextView,
         holder: ViewHolder
-    ) {
+    )
+    {
         GenericPublicVariable.CustDialog = Dialog(ctx)
         GenericPublicVariable.CustDialog.setContentView(R.layout.commentsby_popup)
         var ivNegClose1: ImageView =
@@ -659,7 +901,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                                 if (result!!.size>0){
 //                                    val postParameterArray = ArrayList<PostParameter>()
                                     postlist.clear()
-                                    for (i in 0..result!!.size - 1 ){
+                                    for (i in 0..result.size - 1 ){
                                         if (postfor=="Your")
                                         {
                                             val commentArray = ArrayList<CommentParameter>()
@@ -675,17 +917,17 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 //                                                comments[i].SENDER_NAME + comments[i].COMMENT_DESC
                                                     if (j==0) {
                                                         if (comments[j].CAGN!="Reply to post"){
-                                                            com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                            com.insert(0,"<html><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                         }else {
-                                                            com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                            com.insert(0,"<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                         }
                                                     }else
                                                     {
                                                         if (comments[j].CAGN!="Reply to post"){
-                                                            com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                            com.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                         }
                                                         else {
-                                                            com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                            com.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                         }
                                                     }
                                                     if(comments[j].SENDER_NAME==parentName){
@@ -696,7 +938,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                                                 }
                                             }else
                                             {
-                                                com!!.append("No Comments")
+                                                com.append("No Comments")
                                             }
                                             commentArray.add(0, CommentParameter(
                                                 "",
@@ -760,17 +1002,17 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
 //                                                comments[i].SENDER_NAME + comments[i].COMMENT_DESC
                                                         if (j==0) {
                                                             if (comments[j].CAGN!="Reply to post"){
-                                                                com!!.append("<html><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                                com.insert(0,"<html><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                             }else {
-                                                                com!!.append("<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                                com.insert(0,"<html><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                             }
                                                         }else
                                                         {
                                                             if (comments[j].CAGN!="Reply to post"){
-                                                                com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME} against <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                                com.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME} replied to <font color=\"#bebebe\" face = \"Comic sans MS\">${comments[j].CAGN}</font></h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                             }
                                                             else {
-                                                                com!!.append("<html><br><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
+                                                                com.insert(0,"<html><hr><h4>${comments[j].SENDER_NAME}</h4>&nbsp;&nbsp;${comments[j].COMMENT_DESC}</html>")
                                                             }
                                                         }
                                                         if(comments[j].SENDER_NAME==parentName){
@@ -781,7 +1023,7 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
                                                     }
                                                 }else
                                                 {
-                                                    com!!.append("No Comments")
+                                                    com.append("No Comments")
                                                 }
                                                 commentArray.add(0, CommentParameter(
                                                     "",
@@ -887,4 +1129,8 @@ class PostAdapter(postParameter: ArrayList<PostParameter>, context: Context,PID:
         }
 
     }
+
+
+
+
 }
