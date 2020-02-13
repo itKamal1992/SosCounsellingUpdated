@@ -15,14 +15,19 @@ import com.example.soscounsellingapp.R
 import com.example.soscounsellingapp.activity.SplashScreen
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.io.InputStream
+import java.net.URL
 import java.util.*
 
 class MyService : FirebaseMessagingService() {
     @SuppressLint("WrongConstant")
     override fun onMessageReceived(p0: RemoteMessage?) {
         // TODO(developer): Handle FCM messages here.
+        var inputStream: InputStream
+        inputStream = URL("http://dmimsdu.in/web/api_cubs/viewpager_image/common_img.jpg").openStream()
+        val Icon = BitmapFactory.decodeStream(inputStream)
 
-
+        println("Executed notification  .........11")
         if (p0!!.getNotification() != null) {
             val title_text = p0!!.getNotification()!!.getTitle()
             val body_text = p0.getNotification()!!.getBody()
@@ -38,7 +43,7 @@ class MyService : FirebaseMessagingService() {
                 100,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT
             )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {   println("Executed o")
                 val notificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 val id = "id_product"
@@ -48,7 +53,12 @@ class MyService : FirebaseMessagingService() {
                 val description = "Notifications regarding Sos"
                 val importance = NotificationManager.IMPORTANCE_MAX
                 val mChannel = NotificationChannel(id, name, importance)
+
+
                 // Configure the notification channel.
+
+
+
                 mChannel.description = description
                 mChannel.enableLights(true)
                 // Sets the notification light color for notifications posted to this
@@ -56,17 +66,24 @@ class MyService : FirebaseMessagingService() {
                 mChannel.lightColor = Color.RED
                 notificationManager.createNotificationChannel(mChannel)
 
+
+
                 val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher_foreground)
                 val mbuilder = NotificationCompat.Builder(applicationContext, "id_product")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setSmallIcon(R.drawable.sos_paw)
                     .setContentTitle(p0.getNotification()!!.getTitle()!!.toUpperCase(Locale(p0.getNotification()!!.getTitle())))
                     .setContentText(body_text!!.capitalize())
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
+                    .setLargeIcon(Icon)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setStyle(NotificationCompat.BigTextStyle().bigText("Much longer text that cannot fit one line..."))
+                    .setStyle(NotificationCompat.BigPictureStyle()
+                        .bigPicture(Icon)
+                )
                     .setChannelId(id)
                     .setNumber(1)
-//                    .setColor(255)
+                    .setColor(255)
                     .setWhen(System.currentTimeMillis())
                 val mNotifiactionMgr = NotificationManagerCompat.from(applicationContext)
                 mNotifiactionMgr.notify(1, mbuilder.build())
@@ -74,17 +91,26 @@ class MyService : FirebaseMessagingService() {
             }
             else
             {
+                println("Executed not o here")
                 val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher_background)
                 val mbuilder = NotificationCompat.Builder(applicationContext, "id_product")
-                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setSmallIcon(R.drawable.sos_paw)
                     .setContentTitle(p0.getNotification()!!.getTitle()!!.toUpperCase(Locale(p0.getNotification()!!.getTitle())))
                     .setContentText(body_text.capitalize())
+          .setStyle(NotificationCompat.BigTextStyle().bigText("Much longer text that cannot fit one line..."))
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
+                    .setLargeIcon(Icon)
+                    .setStyle(NotificationCompat.BigPictureStyle()
+                        .bigPicture(Icon)
+                    )
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
                 val mNotifiactionMgr = NotificationManagerCompat.from(applicationContext)
                 mNotifiactionMgr.notify(1, mbuilder.build())
+
+
+
             }
 
         }

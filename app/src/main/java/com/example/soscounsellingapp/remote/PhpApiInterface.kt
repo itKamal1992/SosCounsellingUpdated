@@ -14,7 +14,7 @@ interface PhpApiInterface {
 
     @FormUrlEncoded
     @POST("api_cubs/user_reg.php")
-    fun RegisterUser(@Field("REQUEST") REQUEST : String, @Field("Parent_NAME") Parent_NAME: String, @Field("Parent_Mobile") Parent_Mobile: String, @Field("Parent_EMAIL") Parent_EMAIL: String, @Field("Child_NAME") Child_NAME: String, @Field("Address")Address:String, @Field("School_NAME") School_NAME: String, @Field("School_CLASS") School_CLASS: String, @Field("Password") Password: String, @Field("User_Role") UserRole: String): Call<APIResponse>
+    fun RegisterUser(@Field("REQUEST") REQUEST : String, @Field("Parent_NAME") Parent_NAME: String, @Field("Parent_Mobile") Parent_Mobile: String, @Field("Parent_EMAIL") Parent_EMAIL: String, @Field("Child_NAME") Child_NAME: String, @Field("Address")Address:String, @Field("School_NAME") School_NAME: String, @Field("School_CLASS") School_CLASS: String, @Field("Password") Password: String, @Field("User_Role") UserRole: String, @Field("WHATSAPP_MNO") WHATSAPP_MNO: String): Call<APIResponse>
 
     @FormUrlEncoded
     @POST("api_cubs/user_reg.php")
