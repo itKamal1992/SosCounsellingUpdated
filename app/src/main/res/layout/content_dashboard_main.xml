@@ -88,7 +88,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/red_bg"
                         android:orientation="vertical"
-                        android:foreground="?android:attr/selectableItemBackground">
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:tooltipText="get your post from school"
+                        android:outlineAmbientShadowColor="@color/white"
+                        android:outlineSpotShadowColor="@color/red1"
+                        tools:targetApi="O">
 
                         <ImageView
                             android:layout_width="60dp"
@@ -110,6 +114,49 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/helpGrid"
+                        android:layout_width="0dp"
+                        android:layout_height="140dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/black_bg"
+                        android:orientation="vertical"
+                        android:foreground="?android:attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_help_grid" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="0dp"
+                            android:padding="8dp"
+                            android:text="Help"
+                            android:textAlignment="center"
+                            android:textColor="@color/white_smoke"
+                            android:textStyle="bold"
+                            android:textSize="22sp"  />
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+
+                <!-- Second Row-->
+                <LinearLayout
+                    android:visibility="invisible"
+                    android:id="@+id/accreditation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
                     <LinearLayout
                         android:id="@+id/alertGrid"
                         android:layout_width="0dp"
@@ -141,48 +188,6 @@
 
                     </LinearLayout>
 
-
-
-                </LinearLayout>
-
-                <!-- Second Row-->
-                <LinearLayout
-                    android:id="@+id/accreditation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <LinearLayout
-                        android:id="@+id/helpGrid"
-                        android:layout_width="0dp"
-                        android:layout_height="140dp"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/black_bg"
-
-                        android:orientation="vertical"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="20dp"
-                            android:src="@drawable/ic_help_grid" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="0dp"
-                            android:padding="8dp"
-                            android:text="Help"
-                            android:textAlignment="center"
-                            android:textColor="@color/white_smoke"
-                            android:textStyle="bold"
-                            android:textSize="22sp"  />
-
-                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/eventGrid"
                         android:layout_width="0dp"

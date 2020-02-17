@@ -41,7 +41,7 @@
                             android:layout_height="wrap_content"
                             android:text="Date : 21-01-2020"
                             android:elegantTextHeight="true"
-                            android:textColor="@color/black1"
+                            android:textColor="@color/yellow3"
                             android:textStyle="bold"
                             android:fontFamily="@font/comic"
 
@@ -52,7 +52,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Post by : Admin"
-                            android:textColor="@color/black1"
+                            android:textColor="@color/yellow3"
                             android:textStyle="bold"
                             android:fontFamily="@font/comic"/>
                     </LinearLayout>
@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/comic"
                         android:text="School : SOS-Atrey Layout"
-                        android:textColor="@color/black1"
+                        android:textColor="@color/yellow3"
                         android:textStyle="bold" />
 
 
@@ -77,10 +77,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Get IPAD for free "
-                    android:textColor="@color/sandy_brown"
                     android:textStyle="bold"
                     android:fontFamily="@font/comic"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/orange_red"
+                    android:textSize="18dp"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txt_post_text"
                     android:layout_width="match_parent"
@@ -90,9 +91,11 @@
                     android:fontFamily="@font/comic"/>
                 <ImageView
                     android:id="@+id/post_Image"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="200dp"
-                    android:src="@drawable/background_loginnew"/>
+                    android:src="@drawable/background_loginnew"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"/>
                 <FrameLayout
                     android:id="@+id/post_pdf_framelayout"
                     android:layout_width="match_parent"
@@ -135,7 +138,6 @@
                         android:id="@+id/post_video"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:background="@color/black"
                         />
                     <ProgressBar
                         android:id="@+id/post_video_progress"
@@ -212,7 +214,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="Like"
                                 android:fontFamily="@font/comic"
-                                android:textSize="18dp"/>
+                                android:textSize="18dp"
+                                android:textColor="@color/yellow2"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -243,7 +246,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="Share"
                                 android:fontFamily="@font/comic"
-                                android:textSize="18dp"/>
+                                android:textSize="18dp"
+                                android:textColor="@color/yellow2"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -304,7 +308,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Comments"
                                 android:gravity="center_horizontal"
-                                android:textColor="@color/black1"
+                                android:textColor="@color/yellow2"
                                 android:fontFamily="@font/comic"
                                 android:textSize="16dp"
                                 android:textStyle="bold"

@@ -40,18 +40,18 @@
         android:id="@+id/nav_inbox"
         android:icon="@drawable/ic_inbox_grid"
         android:title="@string/menu_inbox" />
-    <item
-        android:id="@+id/nav_alert"
-        android:icon="@drawable/ic_alert_grid"
-        android:title="@string/menu_alert" />
+<!--    <item-->
+<!--        android:id="@+id/nav_alert"-->
+<!--        android:icon="@drawable/ic_alert_grid"-->
+<!--        android:title="@string/menu_alert" />-->
     <item
         android:id="@+id/nav_help"
         android:icon="@drawable/ic_help_grid"
         android:title="@string/menu_help" />
-    <item
-        android:id="@+id/nav_events"
-        android:icon="@drawable/ic_event_grid"
-        android:title="@string/menu_event" />
+<!--    <item-->
+<!--        android:id="@+id/nav_events"-->
+<!--        android:icon="@drawable/ic_event_grid"-->
+<!--        android:title="@string/menu_event" />-->
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout"

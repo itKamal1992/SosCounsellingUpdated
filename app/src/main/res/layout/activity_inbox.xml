@@ -7,7 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.InboxActivity"
+    android:orientation="vertical"
     android:background="@drawable/background_yellow_new">
+<!--    <include-->
+<!--        layout="@layout/custom_action_bar_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,16 +95,17 @@
                             android:fontFamily="@font/comic"
                             android:drawableLeft="@drawable/ic_touch_app_black_24dp"
                             android:drawableStart="@drawable/ic_touch_app_black_24dp"/>
+
                         <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="match_parent"
                             android:id="@+id/select_from_date"
-                            android:layout_gravity="left"
-                            android:paddingStart="5dp"
-                            android:gravity="center_vertical|center_horizontal"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:fontFamily="@font/comic"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:paddingStart="5dp"
                             android:paddingLeft="7dp"
-                            android:text="28-02-2020"
-                            android:fontFamily="@font/comic"/>
+                            android:text="28-02-2020" />
 
                     </LinearLayout>
                     <LinearLayout
@@ -202,7 +209,7 @@
                 android:id="@+id/btn_selfPosts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your's Posts"
+                android:text="Post of your's"
                 android:layout_weight="1"
                 android:textAllCaps="false"
                 android:fontFamily="@font/comic"

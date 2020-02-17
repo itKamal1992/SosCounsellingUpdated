@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        app:cardBackgroundColor="@color/colormiddle"
+        app:cardBackgroundColor="@color/red"
         android:layout_height="wrap_content">
 
         <LinearLayout android:layout_width="match_parent"
@@ -79,7 +79,9 @@
                         android:text="OK"
                         android:background="@drawable/btn_white_round"
                         android:layout_gravity="center_horizontal"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/white"/>
             </LinearLayout>
 
         </LinearLayout>

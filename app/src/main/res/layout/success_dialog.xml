@@ -12,14 +12,15 @@
 		android:layout_marginRight="@dimen/layout_marginRight_7dp"
 		android:elevation="@dimen/elevation_5dp"
 		android:layout_alignParentRight="true"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:visibility="gone"/>
 
 	<androidx.cardview.widget.CardView android:layout_width="match_parent"
 		app:cardCornerRadius="@dimen/cardCornerRadius_15dp"
 		android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
-		app:cardBackgroundColor="@color/orange"
+		app:cardBackgroundColor="@color/red"
 		android:layout_height="wrap_content">
 
 		<LinearLayout android:layout_width="match_parent"
@@ -38,13 +39,16 @@
 					android:textStyle="bold"
 					android:text="Success"
 					android:textSize="@dimen/txt_size_25dp"
-					android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"
+					android:textColor="@color/white"
+					android:fontFamily="@font/comic"/>
 
 				<ImageView android:layout_width="match_parent"
 					android:layout_marginLeft="@dimen/layout_marginLeft_20dp"
 					android:layout_marginRight="@dimen/layout_marginRight_20dp"
 					android:layout_marginBottom="@dimen/layout_marginBottom_10dp"
 					android:src="@drawable/ic_done_all_black_24dp"
+					android:backgroundTint="@color/white"
 					android:layout_height="wrap_content"/>
 
 				<TextView android:layout_width="match_parent"
@@ -55,7 +59,9 @@
 					android:textAlignment="center"
 					android:textSize="@dimen/txt_size_18dp"
 					android:text="Registered Successfully"
-					android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"
+					android:textColor="@color/white"
+					android:fontFamily="@font/comic"/>
 
 				<!--<TextView android:layout_width="match_parent"-->
 				<!--android:layout_marginLeft="@dimen/layout_marginLeft_20dp"-->
@@ -67,12 +73,12 @@
 				<!--android:text="@string/positive_popup_default"-->
 				<!--android:layout_height="wrap_content"/>-->
 
-				<Button android:layout_width="@dimen/layout_width_200dp"
+				<Button android:layout_width="wrap_content"
 					android:id="@+id/btnCustomDialogAccept"
-					android:layout_marginTop="@dimen/layout_marginTop_20dp"
 					android:text="OK"
-					android:textColor="@color/colorWhite"
-					android:background="@drawable/btn_green_round"
+					android:textColor="@color/black"
+					android:background="@drawable/btn_white_round"
+					android:backgroundTint="@color/white"
 					android:layout_gravity="center_horizontal"
 					android:layout_height="wrap_content"/>
 			</LinearLayout>

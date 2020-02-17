@@ -51,6 +51,7 @@
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:textColor="@color/white"
+                        android:fontFamily="@font/comic"
                         />
 
                     <EditText
@@ -63,6 +64,7 @@
                         android:layout_marginTop="20dp"
                         android:textSize="15dp"
                         android:inputType="text"
+                        android:fontFamily="@font/comic"
                         />
 
                     <EditText
@@ -76,6 +78,7 @@
                         android:textSize="15dp"
                         android:inputType="number"
                         android:maxLength="10"
+                        android:fontFamily="@font/comic"
                         />
 
                     <LinearLayout
@@ -94,9 +97,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="is parent number same as WhatsApp Number?"
+                            android:text="is above number same as WhatsApp Number?"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="14dp"
+                            android:fontFamily="@font/comic"
                             />
 
                     </LinearLayout>
@@ -113,6 +117,7 @@
                         android:inputType="number"
                         android:maxLength="10"
                         android:textColor="@color/black"
+                        android:fontFamily="@font/comic"
                         />
 
                     <EditText
@@ -125,6 +130,7 @@
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
                         android:inputType="textEmailAddress"
+                        android:fontFamily="@font/comic"
                         />
                     <EditText
                         android:id="@+id/et_password"
@@ -137,6 +143,7 @@
                         android:textSize="15dp"
                         android:inputType="textPassword"
                         android:maxLength="20"
+                        android:fontFamily="@font/comic"
 
                         />
 
@@ -152,6 +159,7 @@
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
                         android:inputType="text"
+                        android:fontFamily="@font/comic"
                         />
 
 
@@ -166,6 +174,7 @@
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
                         android:inputType="text"
+                        android:fontFamily="@font/comic"
                         />
 
                     <LinearLayout
@@ -181,6 +190,7 @@
                             android:layout_height="35dp"
                             android:hint="School Name"
                             android:paddingLeft="5dp"
+                            android:fontFamily="@font/comic"
 
                             />
 
@@ -200,6 +210,7 @@
                             android:hint="School Name"
                             android:paddingLeft="5dp"
                             android:entries="@array/school"
+                            android:fontFamily="@font/comic"
 
                             />
                     </LinearLayout>
@@ -214,6 +225,7 @@
                         android:background="@color/login_gray"
                         android:textColor="@color/white"
                         android:layout_marginTop="30dp"
+                        android:fontFamily="@font/comic"
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
