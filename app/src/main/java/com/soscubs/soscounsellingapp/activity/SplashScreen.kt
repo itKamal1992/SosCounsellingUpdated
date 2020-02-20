@@ -89,7 +89,7 @@ class SplashScreen : AppCompatActivity() {
                                         }
                                     } else {
                                         val handler = Handler()
-                                        handler.postDelayed(runnable, 1300)
+                                        handler.postDelayed(runnable, 800)
                                     }
                                 } else {
                                     showInternetNegativePopUpSplash(

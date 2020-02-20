@@ -48,11 +48,7 @@
         android:id="@+id/nav_help"
         android:icon="@drawable/ic_help_grid"
         android:title="@string/menu_help" />
-    <item
-        android:id="@+id/nav_events"
-        android:icon="@drawable/ic_event_grid"
-        android:title="@string/menu_event" />
-    <item
+        <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout"
         android:title="@string/menu_logout" />

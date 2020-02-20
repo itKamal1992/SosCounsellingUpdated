@@ -34,6 +34,9 @@ class GetLoginData {
 
     var Url: String = "-"
 
+    var childname1: String = "-"
+    var classname1: String = "-"
+
 
 
 

@@ -40,11 +40,11 @@ import kotlin.collections.ArrayList
 //${comments[i].SENDER_NAME}
 //Sender Name/////
 class InboxActivity : AppCompatActivity() {
+    private  var postType: String = ""
     private var postParameterArray: ArrayList<PostParameter>? = null
     private var recyclerView: RecyclerView? = null
     var PID: String = ""
     var S_ID: String = ""
-
     var parentName: String = ""
 
     var cal = Calendar.getInstance()
@@ -243,9 +243,10 @@ class InboxActivity : AppCompatActivity() {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
+        //Theme_AppCompat_DayNight_Dialog
         val dpd = DatePickerDialog(
             this,
-            R.style.Theme_AppCompat_DayNight_Dialog,
+            R.style.AppTheme4,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 println(view)
                 println(year)
@@ -275,7 +276,7 @@ class InboxActivity : AppCompatActivity() {
         val dpd = DatePickerDialog(
 
             this,
-            R.style.Theme_AppCompat_DayNight_Dialog,
+            R.style.AppTheme4,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 println(view)
                 println(year)
@@ -546,7 +547,8 @@ class InboxActivity : AppCompatActivity() {
                                             S_ID,
                                             postfor,
                                             parentName,
-                                            this@InboxActivity
+                                            this@InboxActivity,
+                                            txt_postType.text.toString()
                                         )
                                     if (postParameterArray!!.isEmpty()) {
 //                                    if (!isFinishing){ postParameterArray.clear()
@@ -570,11 +572,24 @@ class InboxActivity : AppCompatActivity() {
 
                                     }
 
+                                }else{
+
+                                    if (isFinishing){
+                                        GenericUserFunction.showOopsError(
+                                            this@InboxActivity,
+                                            "Posts not delivered for you"
+                                        )
+                                    }
                                 }
-                                println(result)
+
                             } else {
                                 if(!isFinishing){
-                                dialog.dismiss()}
+                                dialog.dismiss()
+                                        GenericUserFunction.showOopsError(
+                                            this@InboxActivity,
+                                            "Posts not delivered for you"
+                                        )
+                                }
 
                             }
                             // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

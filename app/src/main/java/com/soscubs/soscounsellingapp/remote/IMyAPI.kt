@@ -1,6 +1,7 @@
 package com.soscubs.soscounsellingapp.remote
 
 import com.soscubs.soscounsellingapp.ApiCustomRequest.SosPostsRequest
+import com.soscubs.soscounsellingapp.DataClass.CounsellerData
 import com.soscubs.soscounsellingapp.DataClass.PostParameter
 import com.soscubs.soscounsellingapp.model.APIResponse
 import com.soscubs.soscounsellingapp.model.GetLoginData
@@ -11,9 +12,8 @@ import retrofit2.http.*
 
 interface IMyAPI {
 
-    @GET("School/PostSchool")
+    @GET("School/GetSchool")
     fun GetSchoolData(): Call<ArrayList<SchoolDataField>>
-
 
 
     @FormUrlEncoded
@@ -44,11 +44,12 @@ interface IMyAPI {
     ):Call<GetLoginData>
 
     @FormUrlEncoded
-    @POST("Login/PostLogin")
+    @POST("Registration/ForgetPassword")
     fun ForgetPass(
-        @Field("Username") SCH_UID:String ,
-        @Field("Password")  ADDRESS:String
-    ):Call<GetLoginData>
+        @Field("MOBNO") MOBNO:String ,
+        @Field("P_P_EMAIL")  P_P_EMAIL:String,
+        @Field("P_Password")  P_Password:String
+    ):Call<APIResponse>
 
 //    @FormUrlEncoded
 //    @GET("Post/GetMessage")
@@ -80,7 +81,28 @@ interface IMyAPI {
         @Field("SENDER_NAME")  SENDER_NAME:String,
         @Field("CAGN")  CAGN:String
     ):Call<APIResponse>
+
+
+    @GET("Counseller/GetCounsellerDataForApp")
+    fun getCounseller(
+        @QueryMap  options:Map<String, String>)
+            :Call<CounsellerData>
+
+    @FormUrlEncoded
+    @POST("Registration/UpdateChild")
+    fun AddChild(
+        @Field("PID") PID:Int ,
+        @Field("CLASS_NAME1")  CLASS_NAME1:String,
+        @Field("CHILD_NAME1") CHILD_NAME1:String
+    ):Call<APIResponse>
+
 }
 /*
+parentID,
+                    schoolID,
+                    childName,
+                    schoolName,
+                    class_name,
+                    current_date
 PAR_UID:String ,SCH_UID:String, ID:String,COMMENT_DESC:String,CDATE:String,SENDER_NAME:String,CAGN:String
 */

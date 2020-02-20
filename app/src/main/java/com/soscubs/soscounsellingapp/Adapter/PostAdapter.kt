@@ -52,7 +52,8 @@ class PostAdapter(
     S_ID: String,
     postfor: String,
     parentName: String,
-    activity:Activity
+    activity:Activity,
+    postType: String
 //    ,
 //    videoSurfaceContainer: FrameLayout
 ) :
@@ -71,6 +72,7 @@ class PostAdapter(
     var S_ID:String = ""
     var postfor:String = ""
     var activity:Activity?=null
+    var postType:String = ""
 
 //    private var player: MediaPlayer?=null
 //    private var controller: MyMediaController?=null
@@ -93,6 +95,7 @@ class PostAdapter(
 
         this.parentName=parentName
         this.activity=activity
+        this.postType=postType
 
 
 
@@ -122,6 +125,14 @@ class PostAdapter(
     override fun onBindViewHolder(holder: PostAdapter.ViewHolder, position: Int) {
         val parameter: PostParameter = postlist[position]
 
+        if (postType!="Common Posts")
+        {
+            holder.linearLayout_like_share.visibility=View.GONE
+        }
+        else
+        {
+            holder.linearLayout_like_share.visibility=View.VISIBLE
+        }
 //        controller = MyMediaController(holder.itemView.context )
 //        holder.videoUrl="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
 
@@ -230,7 +241,7 @@ class PostAdapter(
 
 //                val bitmapDrawable = BitmapDrawable(thumbnail)
 //                holder.post_video.setBackgroundResource(R.drawable.ic_inbox)
-                var displaymetrics = DisplayMetrics()
+//                var displaymetrics = DisplayMetrics()
 //            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 //            ctx!!.resources.displaymetrics
 //            var h = displaymetrics.heightPixels;
@@ -305,15 +316,26 @@ class PostAdapter(
 
         holder.ln_layout_like.setOnClickListener {
             //            Toast.makeText(ctx,"like hit $position",Toast.LENGTH_SHORT).show()
-            getLikeResult(
-                "" + parameter.PID,
-                "0",
-                "" + S_ID,
-                "" + parameter.ID,
-                "" + sdf.format(cal.time).toString(),
-                "" + parameter.ParentName,
-                position
-            )
+try {
+
+    if (parameter.LIKES_STATUS_PAR == "F") {
+        getLikeResult(
+            "" + parameter.PID,
+            "0",
+            "" + S_ID,
+            "" + parameter.ID,
+            "" + sdf.format(cal.time).toString(),
+            "" + parameter.ParentName,
+            position
+        )
+    } else {
+
+        Toast.makeText(ctx, "Post already liked", Toast.LENGTH_SHORT).show()
+    }
+}catch (ex:java.lang.Exception)
+{
+    println("Likes error >>>"+ex.localizedMessage )
+}
         }
 
 //        holder.img_post_comment.setOnClickListener {
@@ -447,6 +469,7 @@ class PostAdapter(
         val txt_post_like_count = itemView.findViewById<TextView>(R.id.txt_post_like_count)
         val ln_layout_like = itemView.findViewById<LinearLayout>(R.id.ln_layout_like)
         val ln_layout_share = itemView.findViewById<LinearLayout>(R.id.ln_layout_share)
+        val linearLayout_like_share = itemView.findViewById<LinearLayout>(R.id.linearLayout_like_share)
 
 
         val txt_titleComments = itemView.findViewById<TextView>(R.id.txt_titleComments)

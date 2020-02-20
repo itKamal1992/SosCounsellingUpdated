@@ -151,20 +151,19 @@
 
                 <!-- Second Row-->
                 <LinearLayout
-                    android:visibility="invisible"
+
                     android:id="@+id/accreditation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="2">
                     <LinearLayout
-                        android:id="@+id/alertGrid"
+                        android:id="@+id/addChildGrid"
                         android:layout_width="0dp"
                         android:layout_height="140dp"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/black_bg"
-
                         android:orientation="vertical"
                         android:foreground="?android:attr/selectableItemBackground">
 
@@ -173,14 +172,14 @@
                             android:layout_height="60dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="20dp"
-                            android:src="@drawable/ic_alert_grid" />
+                            android:src="@drawable/ic_add_child_grid" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="0dp"
                             android:padding="8dp"
-                            android:text="Alert"
+                            android:text="Add Child"
                             android:textAlignment="center"
                             android:textColor="@color/white_smoke"
                             android:textStyle="bold"
@@ -189,6 +188,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="invisible"
                         android:id="@+id/eventGrid"
                         android:layout_width="0dp"
                         android:layout_height="140dp"

@@ -11,11 +11,4 @@
     </string-array>
 
 
-
-    <string-array name="class_school">
-        <item>Select class </item>
-        <item>1st </item>
-        <item>2nd</item>
-        <item>3rd</item>
-    </string-array>
 </resources>

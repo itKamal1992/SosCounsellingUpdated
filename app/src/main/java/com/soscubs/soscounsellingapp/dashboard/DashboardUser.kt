@@ -31,8 +31,16 @@ import com.soscubs.soscounsellingapp.model.APIResponse
 import com.soscubs.soscounsellingapp.remote.ApiClientPhp
 import com.soscubs.soscounsellingapp.remote.PhpApiInterface
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import com.soscubs.soscounsellingapp.DataClass.CounsellerData
+import com.soscubs.soscounsellingapp.Generic.GenericUserFunction
+import com.soscubs.soscounsellingapp.Generic.InternetConnection
+import com.soscubs.soscounsellingapp.activity.AddChildActivity
+import com.soscubs.soscounsellingapp.common.Common
+import com.soscubs.soscounsellingapp.remote.IMyAPI
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_dashboard_user.*
 import kotlinx.android.synthetic.main.content_dashboard_main.*
 import retrofit2.Call
@@ -45,8 +53,6 @@ import kotlin.system.exitProcess
 class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var dotsCount: Int = 0
     private var dots: Array<ImageView?>? = null
-
-
     var parentName: String = ""
     var parentMobile: String = ""
     var whatsApptMobile: String = ""
@@ -62,6 +68,9 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     var coMobile: String = ""
     var couns_id: String = ""
 
+    var childName1: String = ""
+    var schoolClass1: String = ""
+
     var auth: FirebaseAuth? = null
     private var TOKEN_ID1: String = ""
     private var TOKEN_ID: String = ""
@@ -75,11 +84,13 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     var sidurl: Int = 0
 
+    private lateinit var mServices: IMyAPI
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard_user)
-
+        mServices = Common.getAPI()
         auth = FirebaseAuth.getInstance()
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -133,6 +144,12 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val tv_School = headerView.findViewById(R.id.tv_School) as TextView
         val tv_Class = headerView.findViewById(R.id.tv_Class) as TextView
 
+        val linearLayout_child1=headerView.findViewById(R.id.linearLayout_child1) as LinearLayout
+        val tv_ChildName1 = headerView.findViewById(R.id.tv_ChildName1) as TextView
+        val tv_Class1 = headerView.findViewById(R.id.tv_Class1) as TextView
+
+
+
         helpGrid
         ////Code for Setting Details
 
@@ -170,6 +187,9 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         TOKEN_ID = mypref.getString("TOKEN_ID", null)
 
         sidurl = mypref.getString("SID", null).toInt()
+
+        childName1 = mypref.getString("Child_NAME1", null)
+        schoolClass1 = mypref.getString("School_CLASS1", null)
         println("sidurl   " + sidurl)
 
         GetSliderImage()
@@ -207,11 +227,33 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             tv_WhatsApp.text = "What's App : $whatsApptMobile"
         }
 
+        if (childName1.equals(""))
+        {
+            linearLayout_child1.visibility=View.GONE
+            addChildGrid.visibility=View.VISIBLE
+        }else
+        {
+            linearLayout_child1.visibility=View.VISIBLE
+            tv_ChildName1.setText("Child Name : $childName1")
+            tv_Class1.setText("Class : $schoolClass1")
+            addChildGrid.visibility=View.GONE
+            hideItem()
+        }
+
         inboxGrid.setOnClickListener {
             var intent = Intent(this, InboxActivity::class.java)
             intent.putExtra("PID", PID)
             intent.putExtra("parentName", parentName)
             intent.putExtra("S_ID", SID)
+            startActivity(intent)
+
+        }
+        addChildGrid.setOnClickListener {
+            var intent = Intent(this, AddChildActivity::class.java)
+            intent.putExtra("PID", PID)
+            intent.putExtra("parentName", parentName)
+            intent.putExtra("S_ID", SID)
+            intent.putExtra("schoolName", schoolName)
 
             startActivity(intent)
 
@@ -222,10 +264,16 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
+    private fun hideItem() {
+        var navigationView = findViewById(R.id.nav_view) as NavigationView
+        val nav_Menu = navigationView.getMenu()
+        nav_Menu.findItem(R.id.nav_add_child).setVisible(false)
+    }
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onBackPressed() {
         exitDialog()
     }
+
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun exitDialog() {
@@ -291,40 +339,121 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     private fun helpDialog() {
-        //////////Start///////////////
-        GenericPublicVariable.CustDialog = Dialog(this)
-        GenericPublicVariable.CustDialog.setContentView(R.layout.custom_dialog_help)
-        var ivNegClose1: ImageView =
-            GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
-        var btnOk: Button =
-            GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogAccept) as Button
+        if (InternetConnection.checkConnection(this)) {
+
+            val dialog: android.app.AlertDialog =
+                SpotsDialog.Builder().setContext(this).build()
+            dialog.setMessage("Please Wait!!! \nwhile we are Counsellor Info ")
+            dialog.setCancelable(false)
+            dialog.show()
+            try {
+                val data: MutableMap<String, String> = HashMap()
+                data["S_ID"] = SID
+                mServices.getCounseller(data).enqueue(object :
+                    Callback<CounsellerData> {
+                    override fun onFailure(call: Call<CounsellerData>, t: Throwable) {
+                        if (!isFinishing) {
+                            dialog.dismiss()
+                            GenericUserFunction.DisplayToast(
+                                this@DashboardUser,
+                                "Server seems to be busy,\nPlease try after some time"
+                            )
+//                        val snackbar = Snackbar
+//                            .make(
+//                                this@DashboardUser.currentFocus,
+//                                "Sorry for inconvenience\n" +
+//                                        "Server seems to be busy,\n" +
+//                                        "Please try after some time.",
+//                                Snackbar.LENGTH_LONG
+//                            )
+//                        snackbar.show()
+                        }
+                    }
+
+                    override fun onResponse(
+                        call: Call<CounsellerData>,
+                        response: Response<CounsellerData>
+                    ) {
+                        if (response.code() == 200) {
+                            dialog.dismiss()
+                            var result: CounsellerData = response.body()!!
+                            result.COUNS_NAME
+                            result.EMAIL
+                            result.MOBNO
+
+
+                            //////////Start///////////////
+                            GenericPublicVariable.CustDialog = Dialog(this@DashboardUser)
+                            GenericPublicVariable.CustDialog.setContentView(R.layout.custom_dialog_help)
+//                            var ivNegClose1: ImageView =
+//                                GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
+                            var btnOk: Button =
+                                GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogAccept) as Button
 //        var btnCancel: Button = GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogCancel) as Button
-//        var tvMsg: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.tvMsgCustomDialog) as TextView
-//        tvMsg.text = "Do you really want to delete this Exam Key?"
+                            var tvMsg: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.tvMsgCustomDialog) as TextView
+//                            tvMsg.text = "${result.COUNS_NAME} : ${result.MOBNO}"
+                            var txtcontact: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.txtcontact) as TextView
+                            txtcontact.text="${result.COUNS_NAME}\nMobile No : ${result.MOBNO.toString()}\nEmail : ${result.EMAIL.toString()}"
 //        GenericPublicVariable.CustDialog.setCancelable(false)
-        btnOk.setOnClickListener {
-            if(!isFinishing) {
-                GenericPublicVariable.CustDialog.dismiss()
-            }
-        }
+                            btnOk.setOnClickListener {
+                                if (!isFinishing) {
+                                    GenericPublicVariable.CustDialog.dismiss()
+                                }
+                            }
 //        btnCancel.setOnClickListener {
 //            GenericPublicVariable.CustDialog.dismiss()
 //
 //        }
-        ivNegClose1.setOnClickListener {
-            if(!isFinishing) {
-                GenericPublicVariable.CustDialog.dismiss()
+//                            ivNegClose1.setOnClickListener {
+//                                if (!isFinishing) {
+//                                    GenericPublicVariable.CustDialog.dismiss()
+//                                }
+//                            }
+                            if (!isFinishing) {
+                                GenericPublicVariable.CustDialog.window!!.setBackgroundDrawable(
+                                    ColorDrawable(
+                                        Color.TRANSPARENT
+                                    )
+                                )
+                                GenericPublicVariable.CustDialog.show()
+                                //////////End//////////////
+                            }
+
+                        }
+
+
+//                        val snackbar = Snackbar
+//                            .make(
+//                                drawer_layout,
+//                                "Sorry for inconvenience\nPlease try after some time.",
+//                                Snackbar.LENGTH_LONG
+//                            )
+//                        snackbar.show()
+
+
+                    }
+
+                })
+            }catch (ex:java.lang.Exception){
+                if(!isFinishing){
+                dialog.dismiss()
+                ex.printStackTrace()
+                GenericUserFunction.showApiError(
+                    this,
+                    "Sorry for inconvenience\nServer seems to be busy,\nPlease try after some time."
+                )}
             }
+
+        }else {
+            if(!isFinishing){
+                GenericUserFunction.showInternetNegativePopUp(
+                    this,
+                    getString(R.string.failureNoInternetErr)
+                )}
         }
-        if(!isFinishing) {
-            GenericPublicVariable.CustDialog.window!!.setBackgroundDrawable(
-                ColorDrawable(
-                    Color.TRANSPARENT
-                )
-            )
-            GenericPublicVariable.CustDialog.show()
-            //////////End//////////////
-        }
+
+
+
     }
 
 
@@ -560,11 +689,7 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onNavigationItemSelected(menuitem: MenuItem): Boolean {
         when (menuitem.itemId) {
-            R.id.nav_home -> {
 
-                val intent = Intent(this@DashboardUser, MainActivity::class.java)
-                startActivity(intent)
-            }
             R.id.nav_inbox -> {
 
                 var intent = Intent(this, InboxActivity::class.java)
@@ -573,6 +698,17 @@ class DashboardUser : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 intent.putExtra("S_ID", SID)
 
                 startActivity(intent)
+            }
+
+            R.id.nav_add_child -> {
+                var intent = Intent(this, AddChildActivity::class.java)
+                intent.putExtra("PID", PID)
+                intent.putExtra("parentName", parentName)
+                intent.putExtra("S_ID", SID)
+                intent.putExtra("schoolName", schoolName)
+
+                startActivity(intent)
+
             }
 
             R.id.nav_help -> {

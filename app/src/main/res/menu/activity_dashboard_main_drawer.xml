@@ -45,6 +45,10 @@
 <!--        android:icon="@drawable/ic_alert_grid"-->
 <!--        android:title="@string/menu_alert" />-->
     <item
+        android:id="@+id/nav_add_child"
+        android:icon="@drawable/ic_add_child_grid_red"
+        android:title="@string/menu_addchild" />
+    <item
         android:id="@+id/nav_help"
         android:icon="@drawable/ic_help_grid"
         android:title="@string/menu_help" />

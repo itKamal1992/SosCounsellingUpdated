@@ -28,6 +28,7 @@ import com.soscubs.soscounsellingapp.model.GetLoginData
 import com.soscubs.soscounsellingapp.remote.IMyAPI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import com.soscubs.soscounsellingapp.Generic.SharedPreference
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -216,7 +217,9 @@ class MainActivity : AppCompatActivity() {
                                     result.s_id,
                                     result.w_mobno,
                                     result.Co_mobno,
-                                    result.couns_id
+                                    result.couns_id,
+                                    ""+result.childname1,
+                                    ""+result.classname1
                                 )
 
                                 if (!isFinishing) {
@@ -336,8 +339,13 @@ class MainActivity : AppCompatActivity() {
         Sid: String,
         Whatsapp_mno: String,
         Co_mobile: String,
-        couns_id: String
+        couns_id: String,
+        Child_NAME1: String,
+        School_CLASS1: String
     ) {
+
+//        var sharedPreference= SharedPreference(this)
+//        sharedPreference.save("","")
         val mypref = getSharedPreferences("mypref", Context.MODE_PRIVATE)
         val editor = mypref.edit()
 
@@ -356,6 +364,9 @@ class MainActivity : AppCompatActivity() {
         editor.putString("Whatsapp_mno", Whatsapp_mno)
         editor.putString("Co_mobile", Co_mobile)
         editor.putString("couns_id", couns_id)
+
+        editor.putString("Child_NAME1", Child_NAME1)
+        editor.putString("School_CLASS1", School_CLASS1)
 
         editor.apply()
     }
@@ -392,8 +403,8 @@ class MainActivity : AppCompatActivity() {
             //////////Start///////////////
             GenericPublicVariable.CustDialog = Dialog(this)
             GenericPublicVariable.CustDialog.setContentView(R.layout.custom_dialog_exit)
-            var ivNegClose1: ImageView =
-                GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
+//            var ivNegClose1: ImageView =
+//                GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
             var btnYes: Button =
                 GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogAccept) as Button
             var btnNo: Button =

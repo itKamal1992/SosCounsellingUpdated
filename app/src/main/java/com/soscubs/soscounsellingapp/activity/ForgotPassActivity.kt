@@ -35,6 +35,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Double.parseDouble
+import java.lang.Exception
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -164,13 +165,13 @@ class ForgotPassActivity : AppCompatActivity() {
             }
             else
             {
-                userLogin()
+                ResetPassword()
             }
         }
         //  startActivity(getIntent())
     }
 
-    private fun userLogin()
+    private fun ResetPassword()
     {
         if (InternetConnection.checkConnection(this)) {
         try
@@ -181,101 +182,108 @@ class ForgotPassActivity : AppCompatActivity() {
             dialog.setCancelable(false)
             dialog.show()
 
+            var Api_mobile:String;
+            var Api_email:String;
+            if (usernameDataType=="email"){
+                Api_mobile=""
+                Api_email=userName
+            }else
+            {
+                Api_mobile=userName
+                Api_email=""
+            }
             mServices.ForgetPass(
-                userName,
-                password
+                ""+Api_mobile,
+                ""+Api_email,
+                ""+password
             )
-                .enqueue(object : Callback<GetLoginData> {
-                    override fun onFailure(call: Call<GetLoginData>, t: Throwable) {
-
-                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-                        val toast = Toast(applicationContext)
-                        toast.duration = Toast.LENGTH_LONG
-
-                        val inflater =
-                            applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                        val view: View = inflater.inflate(R.layout.toast1, null)
-                        toast.view = view
-                        toast.show()
-                        dialog.dismiss()
+                .enqueue(object : Callback<APIResponse> {
+                    override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                        if(!isFinishing){
+                            dialog.dismiss()
+                            GenericUserFunction.showNegativePopUp(
+                                this@ForgotPassActivity,
+                                "Sorry for inconvenience\nRequest getting failed due to server issue,\nPlease try after some time."
+                            )}
                     }
 
                     override fun onResponse(
-                        call: Call<GetLoginData>,
-                        response: Response<GetLoginData>
+                        call: Call<APIResponse>,
+                        response: Response<APIResponse>
                     ) {
+                        if(!isFinishing){
+                            dialog.dismiss()
+                            try {
 //                        val result: APIResponse? = response.body()
-                        var result = response.body()
-                        var parent_name = response.body()!!.parent_name
-                        println("response.body()!!.ResponseCode  " + result!!.address)
-                        println("result  " + response.body()!!)
-                        if (result!!.pid == null)
-                        {
-                            val toast = Toast(applicationContext)
-                            toast.duration = Toast.LENGTH_LONG
 
-                            val inflater = applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                            val view: View = inflater.inflate(R.layout.toast1, null)
-                            toast.view = view
-                            toast.show()
-                            dialog.dismiss()
-                        } else
-                        {
-                            saveData(
-                                result.pid,
-                                result.parent_name,
-                                result.mobno,
-                                result.p_email,
-                                result.child_name,
-                                result.address,
-                                result.school,
-                                result.class_name,
-                                result.enq_date,
-                                result.userrole,
-                                result.s_id,
-                                result.w_mobno,
-                                result.Co_mobno,
-                                result.couns_id
-                            )
-
-                            dialog.dismiss()
-                            //////////Start///////////////
-                            GenericPublicVariable.CustDialog = Dialog(this@ForgotPassActivity)
-                            GenericPublicVariable.CustDialog.setContentView(R.layout.custom_dialog_test)
-                            var ivNegClose1: ImageView =
-                                GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
-                            var btnOk: Button = GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogAccept) as Button
-//        var btnCancel: Button = GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogCancel) as Button
-                            var tvMsg: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.tvMsgCustomDialog) as TextView
-//                            var txtcontact: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.txtcontact) as TextView
-//                            txtcontact.visibility=View.GONE
-//                            tvMsg.text = "Congratulation!!! Your password han been reset successfully."
-//        GenericPublicVariable.CustDialog.setCancelable(false)
-                            btnOk.setOnClickListener {
-                                GenericPublicVariable.CustDialog.dismiss()
-                                callDashboard()
-                            }
+                                var result : APIResponse?= response.body()
+                                var responsecode = response.body()!!.Responsecode
+                                println("response.body()!!.Responsecode  " + response.body()!!.ResponseCode)
+                                println("result  " + response.body()!!.response)
+                                if (responsecode == 200) {
+                                    //////////Start///////////////
+                                    GenericPublicVariable.CustDialog =
+                                        Dialog(this@ForgotPassActivity)
+                                    GenericPublicVariable.CustDialog.setContentView(R.layout.success_dialog)
+//                                    var ivNegClose1: ImageView =
+//                                        GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
+                                    var btnOk: Button =
+                                        GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogAccept) as Button
+//                                    var btnCancel: Button = GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogCancel) as Button
+                                    var tvMsg: TextView =
+                                        GenericPublicVariable.CustDialog.findViewById(R.id.tvMsgCustomDialog) as TextView
+//                                    var txtcontact: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.txtcontact) as TextView
+//                                    txtcontact.visibility=View.GONE
+                                    tvMsg.text = "Congratulation!!! \nYour password han been reset successfully."
+//                                    GenericPublicVariable.CustDialog.setCancelable(false)
+                                    btnOk.setOnClickListener {
+                                        GenericPublicVariable.CustDialog.dismiss()
+                                        callDashboard()
+                                    }
 //        btnCancel.setOnClickListener {
 //            GenericPublicVariable.CustDialog.dismiss()
 //
 //        }
-                            ivNegClose1.setOnClickListener {
-                                GenericPublicVariable.CustDialog.dismiss()
-                                callDashboard()
-                            }
-                            GenericPublicVariable.CustDialog.window!!.setBackgroundDrawable(
-                                ColorDrawable(
-                                    Color.TRANSPARENT)
-                            )
-                            GenericPublicVariable.CustDialog.show()
-                            //////////End//////////////
+//                                    ivNegClose1.setOnClickListener {
+//                                        GenericPublicVariable.CustDialog.dismiss()
+//                                        callDashboard()
+//                                    }
+                                    GenericPublicVariable.CustDialog.window!!.setBackgroundDrawable(
+                                        ColorDrawable(
+                                            Color.TRANSPARENT
+                                        )
+                                    )
+                                    GenericPublicVariable.CustDialog.show()
+                                    //////////End//////////////
 
-                        }
-                    }
+                                      }else{
+                                    if(!isFinishing){
+                                        dialog.dismiss()
+                                        GenericUserFunction.showNegativePopUp(
+                                            this@ForgotPassActivity,
+                                            "Email ID or Mobile No \nnot registered with us.\nPlease try with correct Credentials."
+                                        )}
+
+                                }
+                    }catch (ex:Exception){
+                                if(!isFinishing){
+                                    dialog.dismiss()
+                                    ex.printStackTrace()
+                                    GenericUserFunction.showApiError(
+                                        this@ForgotPassActivity,
+                                        "Sorry for inconvenience\nServer seems to be busy,\nPlease try after some time."
+                                    )}
+                            }}}
+
                 })
         } catch (ex: Exception) {
             ex.printStackTrace()
-            println("Exception catch 2")
+            if(!isFinishing){
+                ex.printStackTrace()
+                GenericUserFunction.showApiError(
+                    this,
+                    "Sorry for inconvenience\nServer seems to be busy,\nPlease try after some time."
+                )}
         }
     }else {
         if(!isFinishing){
@@ -287,89 +295,11 @@ class ForgotPassActivity : AppCompatActivity() {
     }
 
     private fun callDashboard() {
-        val intent = Intent(this@ForgotPassActivity, DashboardUser::class.java)
+        val intent = Intent(this@ForgotPassActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
 
     }
-    /* private fun userLogin() {
-  try {
-
-             val dialog: android.app.AlertDialog =
-                 SpotsDialog.Builder().setContext(this).build()
-             dialog.setMessage("Please Wait!!! \nwhile we are checking credential")
-             dialog.setCancelable(false)
-             dialog.show()
-
-             var phpApiInterface: PhpApiInterface = ApiClientPhp.getClient().create(
-                 PhpApiInterface::class.java
-             )
-             *//*   var call3: Call<ApiVersion> = phpApiInterface.api_version()*//*
-
-            var call3: Call<APIResponse> =
-                phpApiInterface.UserLogin("Login", userName, userName, password)
-
-            call3.enqueue(object : Callback<APIResponse> {
-                override fun onFailure(call: Call<APIResponse>, t: Throwable) {
-
-                    // Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-                    println(" t.message  "+ t.message)
-
-
-                    val toast = Toast(applicationContext)
-                    toast.duration = Toast.LENGTH_LONG
-
-                    val inflater =
-                        applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                    val view: View = inflater.inflate(R.layout.toast1, null)
-                    toast.view = view
-                    toast.show()
-                    dialog.dismiss()
-
-                    //  Toast.makeText(applicationContext,"Please enter correct credential", Toast.LENGTH_LONG).show()
-                }
-
-                override fun onResponse(
-                    call: Call<APIResponse>,
-                    response: Response<APIResponse>
-                ) {
-                    try {
-                        val result: APIResponse? = response.body()
-                        var size = response.body()!!.data!!.size
-                        println("size arra " + size)
-
-                        val intent = Intent(this@MainActivity, DashboardUser::class.java)
-                        println(" course >>> " + result!!.data!![0].ID)
-                        saveData(
-                            result!!.data!![0].ID,
-                            result!!.data!![0].Parent_NAME,
-                            result!!.data!![0].Parent_Mobile,
-                            result!!.data!![0].Parent_EMAIL,
-                            result!!.data!![0].Child_NAME,
-                            result!!.data!![0].Address1,
-                            result!!.data!![0].School_NAME,
-                            result!!.data!![0].School_CLASS,
-                            result!!.data!![0].Date ,
-                            result!!.data!![0].User_Role
-
-                        )
-                        dialog.dismiss()
-
-                        startActivity(intent)
-
-
-                    } catch (ex: Exception) {
-                        //    ex.printStackTrace()
-                    }
-                }
-            })
-
-
-        } catch (ex: Exception) {
-            //  ex.printStackTrace()
-
-        }
-    }
-*/
 
 
 

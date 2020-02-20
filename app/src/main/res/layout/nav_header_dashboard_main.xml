@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="3dp"
         android:layout_marginLeft="3dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="80dp"
@@ -54,20 +54,7 @@
                 android:textStyle="bold"
                 app:fontFamily="@font/comic"
                 />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white_smoke"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_ChildName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:text="Child Name : Nichaye"
-                android:textColor="@color/colorWhite"
-                android:textSize="14sp"
-                app:fontFamily="@font/comic"
-                />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,7 +71,7 @@
                 app:fontFamily="@font/comic"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0dp"
                 android:background="@color/white_smoke"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -99,7 +86,7 @@
             <LinearLayout
                 android:id="@+id/header_linearlayout_line"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0dp"
                 android:background="@color/white_smoke"
                 android:orientation="horizontal"/>
             <com.google.android.material.textview.MaterialTextView
@@ -112,7 +99,7 @@
                 android:textSize="14sp" />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0dp"
                 android:background="@color/white_smoke"/>
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_School"
@@ -128,6 +115,20 @@
                 android:layout_height="1dp"
                 android:background="@color/white_smoke"/>
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_ChildName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="Child Name : Nichaye"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                app:fontFamily="@font/comic"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/white_smoke"/>
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_Class"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,9 +139,43 @@
                 android:textSize="14sp"
                 app:fontFamily="@font/comic"/>
             <LinearLayout
+                android:id="@+id/linearLayout_child1"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white_smoke"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_smoke"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_ChildName1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Child Name : Nichaye 2"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/comic"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/white_smoke"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/white_smoke"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_Class1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Class : 2nd"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/comic"/>
+            </LinearLayout>
 
 
 

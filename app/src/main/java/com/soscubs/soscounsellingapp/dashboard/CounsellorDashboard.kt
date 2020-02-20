@@ -197,12 +197,7 @@ class CounsellorDashboard : AppCompatActivity(), NavigationView.OnNavigationItem
     override fun onNavigationItemSelected(menuitem: MenuItem): Boolean {
         when(menuitem.itemId)
         {
-            R.id.nav_home->
-            {
 
-                val intent=Intent(this@CounsellorDashboard,MainActivity::class.java)
-                startActivity(intent)
-            }
 
             R.id.nav_logout->
             {

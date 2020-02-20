@@ -21,10 +21,10 @@ class ViewPagerAdapter(//Declaration
     //Resource Provider - Images in Array
     private val images = arrayOf<Int>(
         R.drawable.common_img,
-        R.drawable.sos_akola_birla_two,
-        R.drawable.sos_akola_birla_three,
-        R.drawable.sos_akola_birla_four,
-        R.drawable.sos_akola_birla_five
+        R.drawable.common_img,
+        R.drawable.common_img,
+        R.drawable.common_img,
+        R.drawable.common_img
     )
 
     override fun getCount(): Int {

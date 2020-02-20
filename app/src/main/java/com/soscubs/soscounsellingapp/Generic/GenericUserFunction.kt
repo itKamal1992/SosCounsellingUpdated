@@ -56,18 +56,18 @@ class GenericUserFunction {
         ) {
             GenericPublicVariable.CustDialog = Dialog(context)
             GenericPublicVariable.CustDialog.setContentView(R.layout.negative_custom_popup)
-            var ivNegClose1: ImageView =
-                GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
+//            var ivNegClose1: ImageView =
+//                GenericPublicVariable.CustDialog.findViewById(R.id.ivCustomDialogNegClose) as ImageView
             var btnOk: Button = GenericPublicVariable.CustDialog.findViewById(R.id.btnCustomDialogAccept) as Button
             var tvMsg: TextView = GenericPublicVariable.CustDialog.findViewById(R.id.tvMsgCustomDialog) as TextView
             tvMsg.text = msg
-            GenericPublicVariable.CustDialog.setCancelable(false)
+//            GenericPublicVariable.CustDialog.setCancelable(false)
             btnOk.setOnClickListener {
                 GenericPublicVariable.CustDialog.dismiss()
             }
-            ivNegClose1.setOnClickListener {
-                GenericPublicVariable.CustDialog.dismiss()
-            }
+//            ivNegClose1.setOnClickListener {
+//                GenericPublicVariable.CustDialog.dismiss()
+//            }
             GenericPublicVariable.CustDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             GenericPublicVariable.CustDialog.show()
         }

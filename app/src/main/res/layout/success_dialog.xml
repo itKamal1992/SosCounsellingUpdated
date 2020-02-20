@@ -51,7 +51,7 @@
 					android:backgroundTint="@color/white"
 					android:layout_height="wrap_content"/>
 
-				<TextView android:layout_width="match_parent"
+				<TextView android:layout_width="350dp"
 					android:id="@+id/tvMsgCustomDialog"
 					android:layout_marginLeft="@dimen/layout_marginLeft_20dp"
 					android:layout_marginRight="@dimen/layout_marginRight_20dp"
@@ -61,7 +61,8 @@
 					android:text="Registered Successfully"
 					android:layout_height="wrap_content"
 					android:textColor="@color/white"
-					android:fontFamily="@font/comic"/>
+					android:fontFamily="@font/comic"
+					android:layout_gravity="center_horizontal"/>
 
 				<!--<TextView android:layout_width="match_parent"-->
 				<!--android:layout_marginLeft="@dimen/layout_marginLeft_20dp"-->
@@ -80,7 +81,8 @@
 					android:background="@drawable/btn_white_round"
 					android:backgroundTint="@color/white"
 					android:layout_gravity="center_horizontal"
-					android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/comic"/>
 			</LinearLayout>
 
 		</LinearLayout>

@@ -44,15 +44,19 @@
         <activity
             android:name=".dashboard.DashboardUser"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation = "portrait"/>
         <activity
             android:name=".dashboard.CounsellorDashboard"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation = "portrait"/>
         <activity
             android:name=".activity.NewRegistration"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation = "portrait"/>
+        <activity
+            android:name=".activity.AddChildActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation = "portrait"/>
         <activity
